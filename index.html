@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasjeelat Al-Haramain As-Sharifain Website</title>
+    <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body {
@@ -197,7 +198,7 @@
             border-color: #fff;
         }
 
-        /* SOCIAL MEDIA SOCIAL WIDGET */
+        /* SOCIAL MEDIA WIDGET */
         .social-widget {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -243,69 +244,77 @@
     <h1>Tasjeelat Al-Haramain As-Sharifain Website</h1>
 
     <div class="container">
+        <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
             <div class="widget-card">
-                <div class="widget-title">🕒 Jam Berkembar & Tarikh</div>
+                <div class="widget-title">🕒 Dual Clock & Date</div>
                 <div style="display: flex; justify-content: space-between;">
                     <div>
-                        <div style="font-size: 0.8em; color: #aaa;">Masa Sistem:</div>
+                        <div style="font-size: 0.8em; color: #aaa;">Your Time:</div>
                         <div class="time-display" id="systemTime">00:00:00</div>
                     </div>
                     <div style="text-align: right;">
-                        <div style="font-size: 0.8em; color: #d4af37;">Masa Makkah:</div>
+                        <div style="font-size: 0.8em; color: #d4af37;">Makkah Time:</div>
                         <div class="time-display" id="makkahTime" style="color: #d4af37;">00:00:00</div>
                     </div>
                 </div>
-                <div class="time-date" id="makkahDate">Memuatkan tarikh Masihi...</div>
+                <div class="time-date" id="makkahDate">Loading date...</div>
             </div>
 
             <div class="widget-card">
-                <div class="widget-title">🕌 Info Solat Makkah</div>
-                <div class="prayer-status" id="currentPrayer">Sekarang: <span class="highlight-text">-</span></div>
-                <div class="prayer-next" id="nextPrayer">Selepas ini: <span class="highlight-text">-</span></div>
+                <div class="widget-title">🕌 Makkah Prayer Info</div>
+                <div class="prayer-status" id="currentPrayer">Current: <span class="highlight-text">-</span></div>
+                <div class="prayer-next" id="nextPrayer">Next: <span class="highlight-text">-</span></div>
             </div>
         </div>
 
+        <!-- VIDEO PLAYER -->
         <div class="video-holder">
             <video id="tasjeelat-player" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto" crossorigin="anonymous" data-setup='{}'>
-                <p class="vjs-no-js">Sila aktifkan JavaScript.</p>
+                <p class="vjs-no-js">Please enable JavaScript to view this video.</p>
             </video>
         </div>
 
+        <!-- RECORD CONTROL PANEL -->
         <div class="record-control-panel">
             <button id="recordBtn" class="record-btn" onclick="toggleRecording()">
-                <span class="dot"></span> Mula Rakam
+                <span class="dot"></span> Start Recording
             </button>
             <div id="recordStatus" class="live-indicator">
-                <span class="dot blink"></span> SEDANG MERAKAM... <span id="timer">00:00</span>
+                <span class="dot blink"></span> RECORDING LIVE... <span id="timer">00:00</span>
             </div>
         </div>
 
+        <!-- HORIZONTAL PLAYLIST (INTERNATIONAL ENGLISH) -->
         <div class="playlist-horizontal">
+            <!-- Saudiya TV -->
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn active" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD_1')">Saudiya SD (1)</button>
+                    <button class="stream-btn active" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD')">Saudiya SD</button>
                 </div>
             </div>
 
+            <!-- Al-Quran Al-Kareem TV -->
             <div class="category-group">
                 <div class="category-title">Al-Quran Al-Kareem TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD_1')">QuranKSA SD (1)</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD')">Quran Makkah SD</button>
                 </div>
             </div>
 
+            <!-- As-Sunnah An-Nabawiyyah TV -->
             <div class="category-group">
                 <div class="category-title">As-Sunnah An-Nabawiyyah TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this, 'SunnahKSA_SD_3')">SunnahKSA SD (3)</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this, 'SunnahKSA_SD')">Sunnah Madinah SD</button>
                 </div>
             </div>
         </div>
 
+        <!-- SOCIAL MEDIA WIDGET -->
         <div class="social-widget">
-            <div class="widget-title">📢 Ikuti Media Sosial Kami</div>
+            <div class="widget-title">📢 Follow Our Social Media</div>
             <div class="social-grid">
                 <a href="https://www.youtube.com/@TasjeelatAlharamainAssharifain" target="_blank" class="social-link yt-color">YouTube</a>
                 <a href="https://x.com/tasjeelatharsha" target="_blank" class="social-link x-color">X / Twitter</a>
@@ -315,13 +324,14 @@
         </div>
     </div>
 
+    <!-- Video.js Script -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
         const player = videojs('tasjeelat-player');
-        let currentChannelName = "Saudiya_SD_1";
+        let currentChannelName = "Saudiya_SD";
 
-        // Default stream load pertama kali (Saudiya SD 1)
+        // Default stream load (Saudiya SD)
         player.src({
             src: 'https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8',
             type: 'application/x-mpegURL'
@@ -329,7 +339,7 @@
 
         function changeStream(url, buttonElement, channelName) {
             if (isRecording) {
-                alert("Sila hentikan rakaman dahulu!");
+                alert("Please stop recording before switching channels!");
                 return;
             }
             currentChannelName = channelName;
@@ -342,62 +352,62 @@
             buttonElement.classList.add('active');
         }
 
-        /* JADUAL WAKTU SOLAT MEKAH */
+        /* MAKKAH PRAYER TIME SCHEDULE */
         const prayerSchedule = {
-            2:  { Subuh: "04:11", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:35", Maghrib: "19:00", Isyak: "20:30" },
-            3:  { Subuh: "04:11", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:36", Maghrib: "19:00", Isyak: "20:30" },
-            4:  { Subuh: "04:11", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:36", Maghrib: "19:00", Isyak: "20:30" },
-            5:  { Subuh: "04:11", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:37", Maghrib: "19:01", Isyak: "20:31" },
-            6:  { Subuh: "04:11", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:37", Maghrib: "19:01", Isyak: "20:31" },
-            7:  { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:19", Asar: "15:38", Maghrib: "19:02", Isyak: "20:32" },
-            8:  { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:20", Asar: "15:38", Maghrib: "19:02", Isyak: "20:32" },
-            9:  { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:20", Asar: "15:39", Maghrib: "19:02", Isyak: "20:32" },
-            10: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:20", Asar: "15:39", Maghrib: "19:03", Isyak: "20:33" },
-            11: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:20", Asar: "15:39", Maghrib: "19:03", Isyak: "20:33" },
-            12: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:20", Asar: "15:40", Maghrib: "19:03", Isyak: "20:33" },
-            13: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:21", Asar: "15:40", Maghrib: "19:04", Isyak: "20:34" },
-            14: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:21", Asar: "15:40", Maghrib: "19:04", Isyak: "20:34" },
-            15: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:21", Asar: "15:41", Maghrib: "19:04", Isyak: "20:34" },
-            16: { Subuh: "04:10", Syuruk: "05:38", Zuhur: "12:21", Asar: "15:41", Maghrib: "19:04", Isyak: "20:34" },
-            17: { Subuh: "04:11", Syuruk: "05:39", Zuhur: "12:22", Asar: "15:41", Maghrib: "19:05", Isyak: "20:35" },
-            18: { Subuh: "04:11", Syuruk: "05:39", Zuhur: "12:22", Asar: "15:42", Maghrib: "19:05", Isyak: "20:35" },
-            19: { Subuh: "04:11", Syuruk: "05:39", Zuhur: "12:22", Asar: "15:42", Maghrib: "19:05", Isyak: "20:35" },
-            20: { Subuh: "04:11", Syuruk: "05:39", Zuhur: "12:22", Asar: "15:42", Maghrib: "19:05", Isyak: "20:35" },
-            21: { Subuh: "04:11", Syuruk: "05:39", Zuhur: "12:22", Asar: "15:42", Maghrib: "19:06", Isyak: "20:36" },
-            22: { Subuh: "04:11", Syuruk: "05:40", Zuhur: "12:23", Asar: "15:43", Maghrib: "19:06", Isyak: "20:36" },
-            23: { Subuh: "04:12", Syuruk: "05:40", Zuhur: "12:23", Asar: "15:43", Maghrib: "19:06", Isyak: "20:36" },
-            24: { Subuh: "04:12", Syuruk: "05:40", Zuhur: "12:23", Asar: "15:43", Maghrib: "19:06", Isyak: "20:36" },
-            25: { Subuh: "04:12", Syuruk: "05:40", Zuhur: "12:23", Asar: "15:43", Maghrib: "19:06", Isyak: "20:36" },
-            26: { Subuh: "04:13", Syuruk: "05:41", Zuhur: "12:23", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" },
-            27: { Subuh: "04:13", Syuruk: "05:41", Zuhur: "12:24", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" },
-            28: { Subuh: "04:13", Syuruk: "05:41", Zuhur: "12:24", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" },
-            29: { Subuh: "04:14", Syuruk: "05:41", Zuhur: "12:24", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" },
-            30: { Subuh: "04:14", Syuruk: "05:42", Zuhur: "12:24", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" },
-            1:  { Subuh: "04:14", Syuruk: "05:42", Zuhur: "12:25", Asar: "15:43", Maghrib: "19:07", Isyak: "20:37" }
+            2:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:35", Maghrib: "19:00", Isha: "20:30" },
+            3:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:36", Maghrib: "19:00", Isha: "20:30" },
+            4:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:36", Maghrib: "19:00", Isha: "20:30" },
+            5:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:37", Maghrib: "19:01", Isha: "20:31" },
+            6:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:37", Maghrib: "19:01", Isha: "20:31" },
+            7:  { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:38", Maghrib: "19:02", Isha: "20:32" },
+            8:  { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:20", Asr: "15:38", Maghrib: "19:02", Isha: "20:32" },
+            9:  { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:20", Asr: "15:39", Maghrib: "19:02", Isha: "20:32" },
+            10: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:20", Asr: "15:39", Maghrib: "19:03", Isha: "20:33" },
+            11: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:20", Asr: "15:39", Maghrib: "19:03", Isha: "20:33" },
+            12: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:20", Asr: "15:40", Maghrib: "19:03", Isha: "20:33" },
+            13: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:21", Asr: "15:40", Maghrib: "19:04", Isha: "20:34" },
+            14: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:21", Asr: "15:40", Maghrib: "19:04", Isha: "20:34" },
+            15: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:21", Asr: "15:41", Maghrib: "19:04", Isha: "20:34" },
+            16: { Fajr: "04:10", Sunrise: "05:38", Dhuhr: "12:21", Asr: "15:41", Maghrib: "19:04", Isha: "20:34" },
+            17: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:41", Maghrib: "19:05", Isha: "20:35" },
+            18: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:05", Isha: "20:35" },
+            19: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:05", Isha: "20:35" },
+            20: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:05", Isha: "20:35" },
+            21: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:06", Isha: "20:36" },
+            22: { Fajr: "04:11", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
+            23: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
+            24: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
+            25: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
+            26: { Fajr: "04:13", Sunrise: "05:41", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" },
+            27: { Fajr: "04:13", Sunrise: "05:41", Dhuhr: "12:24", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" },
+            28: { Fajr: "04:13", Sunrise: "05:41", Dhuhr: "12:24", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" },
+            29: { Fajr: "04:13", Sunrise: "05:41", Dhuhr: "12:24", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" },
+            30: { Fajr: "04:14", Sunrise: "05:42", Dhuhr: "12:24", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" },
+            1:  { Fajr: "04:14", Sunrise: "05:42", Dhuhr: "12:25", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" }
         };
 
-        /* LOGIK WIDGET JAM & SISTEM SOLAT */
+        /* CLOCK & PRAYER SYSTEM LOGIC */
         function updateClocksAndPrayers() {
             const now = new Date();
 
-            // 1. Masa Sistem
-            document.getElementById('systemTime').innerText = now.toLocaleTimeString('ms-MY', { hour12: false });
+            // 1. System Time
+            document.getElementById('systemTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
 
-            // 2. Masa Makkah
-            const makkahTimeString = now.toLocaleTimeString('ms-MY', { timeZone: 'Asia/Riyadh', hour12: false });
+            // 2. Makkah Time
+            const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
             document.getElementById('makkahTime').innerText = makkahTimeString;
 
-            const makkahDateString = now.toLocaleDateString('ms-MY', { timeZone: 'Asia/Riyadh', day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('makkahDate').innerText = `Tarikh Masihi (Makkah): ${makkahDateString}`;
+            const makkahDateString = now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('makkahDate').innerText = `Makkah Date: ${makkahDateString}`;
             
             const makkahDay = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric' }));
             const makkahMonthNumeric = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', month: 'numeric' }));
 
-            // 3. Semakan Waktu Solat
+            // 3. Prayer Schedule Logic
             const daySchedule = prayerSchedule[makkahDay];
             if (!daySchedule || (makkahMonthNumeric !== 6 && makkahMonthNumeric !== 7)) {
-                document.getElementById('currentPrayer').innerHTML = "Sekarang: <span class='highlight-text'>Tiada Data</span>";
-                document.getElementById('nextPrayer').innerHTML = "Selepas ini: <span class='highlight-text'>-</span>";
+                document.getElementById('currentPrayer').innerHTML = "Current: <span class='highlight-text'>No Data</span>";
+                document.getElementById('nextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
                 return;
             }
 
@@ -408,56 +418,56 @@
 
             const currentMakkahMinutes = timeToMinutes(makkahTimeString.substring(0, 5));
 
-            const subuhMin = timeToMinutes(daySchedule.Subuh);
-            const syurukMin = timeToMinutes(daySchedule.Syuruk);
-            const zuhurMin = timeToMinutes(daySchedule.Zuhur);
-            const asarMin = timeToMinutes(daySchedule.Asar);
+            const fajrMin = timeToMinutes(daySchedule.Fajr);
+            const sunriseMin = timeToMinutes(daySchedule.Sunrise);
+            const dhuhrMin = timeToMinutes(daySchedule.Dhuhr);
+            const asrMin = timeToMinutes(daySchedule.Asr);
             const maghribMin = timeToMinutes(daySchedule.Maghrib);
-            const isyakMin = timeToMinutes(daySchedule.Isyak);
+            const isyaMin = timeToMinutes(daySchedule.Isha);
 
             let currentPrayerName = "";
             let nextPrayerName = "";
             let nextPrayerTime = "";
 
-            if (currentMakkahMinutes >= isyakMin) {
-                currentPrayerName = "Isyak";
-                nextPrayerName = "Subuh (Esok)";
+            if (currentMakkahMinutes >= isyaMin) {
+                currentPrayerName = "Isha";
+                nextPrayerName = "Fajr (Tomorrow)";
                 const tomorrowSchedule = prayerSchedule[makkahDay + 1] || prayerSchedule[1];
-                nextPrayerTime = tomorrowSchedule.Subuh;
+                nextPrayerTime = tomorrowSchedule.Fajr;
             } else if (currentMakkahMinutes >= maghribMin) {
                 currentPrayerName = "Maghrib";
-                nextPrayerName = "Isyak";
-                nextPrayerTime = daySchedule.Isyak;
-            } else if (currentMakkahMinutes >= asarMin) {
-                currentPrayerName = "Asar";
+                nextPrayerName = "Isha";
+                nextPrayerTime = daySchedule.Isha;
+            } else if (currentMakkahMinutes >= asrMin) {
+                currentPrayerName = "Asr";
                 nextPrayerName = "Maghrib";
                 nextPrayerTime = daySchedule.Maghrib;
-            } else if (currentMakkahMinutes >= zuhurMin) {
-                currentPrayerName = "Zuhur";
-                nextPrayerName = "Asar";
-                nextPrayerTime = daySchedule.Asar;
-            } else if (currentMakkahMinutes >= syurukMin) {
-                currentPrayerName = "Syuruk / Syuruq";
-                nextPrayerName = "Zuhur";
-                nextPrayerTime = daySchedule.Zuhur;
-            } else if (currentMakkahMinutes >= subuhMin) {
-                currentPrayerName = "Subuh";
-                nextPrayerName = "Syuruk";
-                nextPrayerTime = daySchedule.Syuruk;
+            } else if (currentMakkahMinutes >= dhuhrMin) {
+                currentPrayerName = "Dhuhr";
+                nextPrayerName = "Asr";
+                nextPrayerTime = daySchedule.Asr;
+            } else if (currentMakkahMinutes >= sunriseMin) {
+                currentPrayerName = "Sunrise";
+                nextPrayerName = "Dhuhr";
+                nextPrayerTime = daySchedule.Dhuhr;
+            } else if (currentMakkahMinutes >= fajrMin) {
+                currentPrayerName = "Fajr";
+                nextPrayerName = "Sunrise";
+                nextPrayerTime = daySchedule.Sunrise;
             } else {
-                currentPrayerName = "Isyak (Malam Tadi)";
-                nextPrayerName = "Subuh";
-                nextPrayerTime = daySchedule.Subuh;
+                currentPrayerName = "Isha (Last Night)";
+                nextPrayerName = "Fajr";
+                nextPrayerTime = daySchedule.Fajr;
             }
 
-            document.getElementById('currentPrayer').innerHTML = `Sekarang: <span class="highlight-text">${currentPrayerName}</span>`;
-            document.getElementById('nextPrayer').innerHTML = `Selepas ini: <span class="highlight-text">${nextPrayerName} (${nextPrayerTime})</span>`;
+            document.getElementById('currentPrayer').innerHTML = `Current: <span class="highlight-text">${currentPrayerName}</span>`;
+            document.getElementById('nextPrayer').innerHTML = `Next: <span class="highlight-text">${nextPrayerName} (${nextPrayerTime})</span>`;
         }
 
         setInterval(updateClocksAndPrayers, 1000);
         window.onload = updateClocksAndPrayers;
 
-        /* LOGIK RAKAMAN VIDEO LIVE */
+        /* VIDEO RECORDING LOGIC */
         let mediaRecorder;
         let recordedChunks = [];
         let isRecording = false;
@@ -470,7 +480,7 @@
             const recordStatus = document.getElementById('recordStatus');
 
             if (!videoElement) {
-                alert("Pemain video belum sedia.");
+                alert("Video player is not ready.");
                 return;
             }
 
@@ -480,7 +490,7 @@
                 try {
                     stream = videoElement.captureStream ? videoElement.captureStream() : videoElement.mozCaptureStream();
                 } catch (e) {
-                    alert("Ralat tangkapan video (CORS).");
+                    alert("Recording error (CORS issue).");
                     return;
                 }
 
@@ -506,7 +516,7 @@
 
                 mediaRecorder.start(1000);
                 isRecording = true;
-                recordBtn.innerHTML = "⏹️ Hentikan Rakam";
+                recordBtn.innerHTML = "⏹️ Stop Recording";
                 recordBtn.classList.add('recording');
                 recordStatus.style.display = 'flex';
                 startTime = Date.now();
@@ -514,7 +524,7 @@
             } else {
                 mediaRecorder.stop();
                 isRecording = false;
-                recordBtn.innerHTML = "<span class='dot'></span> Mula Rakam";
+                recordBtn.innerHTML = "<span class='dot'></span> Start Recording";
                 recordBtn.classList.remove('recording');
                 recordStatus.style.display = 'none';
                 clearInterval(timerInterval);
