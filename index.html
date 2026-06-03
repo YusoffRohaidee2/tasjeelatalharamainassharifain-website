@@ -81,6 +81,24 @@
             color: #ffffff;
             font-weight: bold;
         }
+
+        /* RUNNING TEXT TICKER */
+        .ticker-container {
+            width: 100%;
+            background-color: #1a0000;
+            border: 1px solid #cc0000;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 8px 0;
+        }
+        .ticker-text {
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+
         /* PLAYER CONTAINER */
         .video-holder {
             width: 100%;
@@ -268,6 +286,13 @@
             </div>
         </div>
 
+        <!-- RUNNING TEXT TICKER (RED) -->
+        <div class="ticker-container">
+            <marquee class="ticker-text" scrollamount="5" behavior="scroll" direction="left" id="runningTicker">
+                Loading information announcement...
+            </marquee>
+        </div>
+
         <!-- VIDEO PLAYER -->
         <div class="video-holder">
             <video id="tasjeelat-player" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto" crossorigin="anonymous" data-setup='{}'>
@@ -285,7 +310,7 @@
             </div>
         </div>
 
-        <!-- HORIZONTAL PLAYLIST (INTERNATIONAL ENGLISH) -->
+        <!-- HORIZONTAL PLAYLIST -->
         <div class="playlist-horizontal">
             <!-- Saudiya TV -->
             <div class="category-group">
@@ -386,7 +411,41 @@
             1:  { Fajr: "04:14", Sunrise: "05:42", Dhuhr: "12:25", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" }
         };
 
-        /* CLOCK & PRAYER SYSTEM LOGIC */
+        /* MADINAH PRAYER TIME SCHEDULE */
+        const madinahSchedule = {
+            2:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
+            3:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
+            4:  { Fajr: "04:02", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
+            5:  { Fajr: "04:02", Sunrise: "05:32", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:08", Isha: "20:38" },
+            6:  { Fajr: "04:02", Sunrise: "05:32", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:08", Isha: "20:38" },
+            7:  { Fajr: "04:02", Sunrise: "05:32", Dhuhr: "12:20", Asr: "15:42", Maghrib: "19:09", Isha: "20:39" },
+            8:  { Fajr: "04:02", Sunrise: "05:32", Dhuhr: "12:21", Asr: "15:42", Maghrib: "19:09", Isha: "20:39" },
+            9:  { Fajr: "04:02", Sunrise: "05:32", Dhuhr: "12:21", Asr: "15:42", Maghrib: "19:09", Isha: "20:39" },
+            10: { Fajr: "04:01", Sunrise: "05:32", Dhuhr: "12:21", Asr: "15:42", Maghrib: "19:10", Isha: "20:40" },
+            11: { Fajr: "04:01", Sunrise: "05:32", Dhuhr: "12:21", Asr: "15:42", Maghrib: "19:10", Isha: "20:40" },
+            12: { Fajr: "04:01", Sunrise: "05:32", Dhuhr: "12:21", Asr: "15:42", Maghrib: "19:11", Isha: "20:41" },
+            13: { Fajr: "04:01", Sunrise: "05:33", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:11", Isha: "20:41" },
+            14: { Fajr: "04:01", Sunrise: "05:33", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:11", Isha: "20:41" },
+            15: { Fajr: "04:01", Sunrise: "05:33", Dhuhr: "12:22", Asr: "15:43", Maghrib: "19:11", Isha: "20:41" },
+            16: { Fajr: "04:02", Sunrise: "05:33", Dhuhr: "12:22", Asr: "15:43", Maghrib: "19:12", Isha: "20:42" },
+            17: { Fajr: "04:02", Sunrise: "05:33", Dhuhr: "12:22", Asr: "15:43", Maghrib: "19:12", Isha: "20:42" },
+            18: { Fajr: "04:02", Sunrise: "05:33", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:12", Isha: "20:42" },
+            19: { Fajr: "04:02", Sunrise: "05:33", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:13", Isha: "20:43" },
+            20: { Fajr: "04:02", Sunrise: "05:34", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:13", Isha: "20:43" },
+            21: { Fajr: "04:02", Sunrise: "05:34", Dhuhr: "12:23", Asr: "15:44", Maghrib: "19:13", Isha: "20:43" },
+            22: { Fajr: "04:02", Sunrise: "05:34", Dhuhr: "12:23", Asr: "15:44", Maghrib: "19:13", Isha: "20:43" },
+            23: { Fajr: "04:03", Sunrise: "05:34", Dhuhr: "12:24", Asr: "15:44", Maghrib: "19:13", Isha: "20:43" },
+            24: { Fajr: "04:03", Sunrise: "05:34", Dhuhr: "12:24", Asr: "15:44", Maghrib: "19:14", Isha: "20:44" },
+            25: { Fajr: "04:03", Sunrise: "05:35", Dhuhr: "12:24", Asr: "15:45", Maghrib: "19:14", Isha: "20:44" },
+            26: { Fajr: "04:04", Sunrise: "05:35", Dhuhr: "12:24", Asr: "15:45", Maghrib: "19:14", Isha: "20:44" },
+            27: { Fajr: "04:04", Sunrise: "05:35", Dhuhr: "12:25", Asr: "15:45", Maghrib: "19:14", Isha: "20:44" },
+            28: { Fajr: "04:04", Sunrise: "05:36", Dhuhr: "12:25", Asr: "15:45", Maghrib: "19:14", Isha: "20:44" },
+            29: { Fajr: "04:05", Sunrise: "05:36", Dhuhr: "12:25", Asr: "15:46", Maghrib: "19:14", Isha: "20:44" },
+            30: { Fajr: "04:05", Sunrise: "05:36", Dhuhr: "12:25", Asr: "15:46", Maghrib: "19:14", Isha: "20:44" },
+            1:  { Fajr: "04:05", Sunrise: "05:37", Dhuhr: "12:25", Asr: "15:46", Maghrib: "19:14", Isha: "20:44" }
+        };
+
+        /* CLOCK, PRAYER & TICKER SYSTEM LOGIC */
         function updateClocksAndPrayers() {
             const now = new Date();
 
@@ -403,7 +462,7 @@
             const makkahDay = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric' }));
             const makkahMonthNumeric = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', month: 'numeric' }));
 
-            // 3. Prayer Schedule Logic
+            // 3. Prayer Schedule Widget
             const daySchedule = prayerSchedule[makkahDay];
             if (!daySchedule || (makkahMonthNumeric !== 6 && makkahMonthNumeric !== 7)) {
                 document.getElementById('currentPrayer').innerHTML = "Current: <span class='highlight-text'>No Data</span>";
@@ -462,6 +521,32 @@
 
             document.getElementById('currentPrayer').innerHTML = `Current: <span class="highlight-text">${currentPrayerName}</span>`;
             document.getElementById('nextPrayer').innerHTML = `Next: <span class="highlight-text">${nextPrayerName} (${nextPrayerTime})</span>`;
+
+            // 4. Update Running Text dynamically based on sysdate prayer data
+            updateTickerText(makkahDay, daySchedule);
+        }
+
+        /* DYNAMIC TICKER GENERATOR */
+        let lastLoggedDay = null;
+        function updateTickerText(dayNum, meccaToday) {
+            if (lastLoggedDay === dayNum) return; // Mengelakkan pembaziran proses DOM refresh setiap saat
+            lastLoggedDay = dayNum;
+
+            const madinahToday = madinahSchedule[dayNum];
+            
+            let meccaString = "Mecca Prayer Time for today: No Data Available";
+            if (meccaToday) {
+                meccaString = `Mecca Prayer Time for today: Fajr: ${meccaToday.Fajr} | Sunrise: ${meccaToday.Sunrise} | Dhuhr: ${meccaToday.Dhuhr} | Asr: ${meccaToday.Asr} | Maghrib: ${meccaToday.Maghrib} | Isha: ${meccaToday.Isha}`;
+            }
+
+            let madinahString = "Madinah Prayer Time for today: No Data Available";
+            if (madinahToday) {
+                madinahString = `Madinah Prayer Time for today: Fajr: ${madinahToday.Fajr} | Sunrise: ${madinahToday.Sunrise} | Dhuhr: ${madinahToday.Dhuhr} | Asr: ${madinahToday.Asr} | Maghrib: ${madinahToday.Maghrib} | Isha: ${madinahToday.Isha}`;
+            }
+
+            const staticNotice = "Welcome to the Tasjeelat Al-Haramain As-Sharifain | We here will provide you with live streaming 24/7 for channels like Quran Kareem (Mecca) & Sunnah Nabawi (Madinah) | We also broadcast live prayers here | We are sorry because the HD feeds that we get are faulty (couldn't play) | ";
+            
+            document.getElementById('runningTicker').innerText = staticNotice + meccaString + " | " + madinahString + " |";
         }
 
         setInterval(updateClocksAndPrayers, 1000);
