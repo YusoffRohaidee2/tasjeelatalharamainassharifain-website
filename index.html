@@ -231,7 +231,7 @@
             border-color: #fff;
         }
 
-        /* EXPECTED IMAMS & BILALS WIDGET */
+        /* HARAMAIN SCHEDULES WIDGET */
         .schedule-widget {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -239,11 +239,32 @@
             padding: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
+        .schedule-main-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .schedule-block {
+            background-color: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        .block-title {
+            font-size: 1em;
+            font-weight: bold;
+            color: #d4af37;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .schedule-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-top: 10px;
         }
         @media (max-width: 600px) {
             .schedule-grid {
@@ -251,21 +272,20 @@
             }
         }
         .schedule-column {
-            background-color: #161616;
-            border: 1px solid #2a2a2a;
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
             border-radius: 6px;
             padding: 12px;
         }
         .column-header {
-            font-size: 0.95em;
+            font-size: 0.9em;
             font-weight: bold;
-            color: #d4af37;
+            color: #a0a0a0;
             border-bottom: 1px solid #333;
             padding-bottom: 6px;
             margin-bottom: 10px;
-            text-align: center;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-align: center;
         }
         .schedule-row {
             display: flex;
@@ -333,6 +353,43 @@
         .x-color { background-color: #000000; border: 1px solid #444; }
         .tg-color { background-color: #0088cc; }
         .wa-color { background-color: #25d366; color: #000; }
+
+        /* ADHAN POPUP CSS */
+        .azan-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 340px;
+            background: #d4af37;
+            color: #000;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.5);
+            z-index: 99999;
+            display: none;
+            animation: slideIn .4s ease;
+            box-sizing: border-box;
+        }
+        .azan-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+            padding-bottom: 5px;
+        }
+        .azan-body {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .azan-footer {
+            margin-top: 12px;
+            font-size: 12px;
+            opacity: .8;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -344,7 +401,7 @@
         <div class="widgets-grid">
             <!-- DUAL CLOCK CARD -->
             <div class="widget-card" style="flex: 1.2; min-width: 280px;">
-                <div class="widget-title">🕒 Dual Clock & Date</div>
+                <div class="widget-title">Dual Clock & Date</div>
                 <div style="display: flex; justify-content: space-between;">
                     <div>
                         <div style="font-size: 0.8em; color: #aaa;">Your Time:</div>
@@ -360,14 +417,14 @@
 
             <!-- MECCA PRAYER INFO CARD -->
             <div class="widget-card">
-                <div class="widget-title">🕌 Makkah Prayer Info</div>
+                <div class="widget-title">Makkah Prayer Info</div>
                 <div class="prayer-status" id="currentPrayer">Current: <span class="highlight-text">-</span></div>
                 <div class="prayer-next" id="nextPrayer">Next: <span class="highlight-text">-</span></div>
             </div>
 
             <!-- MADINAH PRAYER INFO CARD -->
             <div class="widget-card">
-                <div class="widget-title">🕌 Madinah Prayer Info</div>
+                <div class="widget-title">Madinah Prayer Info</div>
                 <div class="prayer-status" id="madinahCurrentPrayer">Current: <span class="highlight-text">-</span></div>
                 <div class="prayer-next" id="madinahNextPrayer">Next: <span class="highlight-text">-</span></div>
             </div>
@@ -424,42 +481,73 @@
             </div>
         </div>
 
-        <!-- SCHEDULE WIDGET (MECCA & MADINAH SPLIT) -->
+        <!-- HARAMAIN SCHEDULES WIDGET -->
         <div class="schedule-widget">
-            <div class="widget-title">🕌 Haramain Schedule (14 - 20 Dzulhijjah 1447H)</div>
-            <div class="disclaimer-text">Names here may vary than the actual name.</div>
-            <div class="schedule-grid">
-                <!-- Madinah Imams Column (Fixed Weekly Schedule - image_13161b.jpg) -->
-                <div class="schedule-column">
-                    <div class="column-header">Madinah Expected Imams</div>
-                    <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Abdul Bari Al-Thubaity</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Muhammad Al-Burhaji</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Khalid Al-Muhanna</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Saleh Al-Maghamsi</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Abdullah Al-Qarafi</span></div>
+            <div class="disclaimer-text" style="margin-bottom: 10px;">Names here may vary than the actual name.</div>
+            
+            <div class="schedule-main-grid">
+                <!-- MAKKAH SCHEDULE BLOCK -->
+                <div class="schedule-block">
+                    <div class="block-title">Makkah Schedule (14 - 20 Dzulhijjah 1447H)</div>
+                    <div class="schedule-grid">
+                        <!-- Imams -->
+                        <div class="schedule-column">
+                            <div class="column-header">Expected Imams</div>
+                            <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Bandar Baleelah</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Abdullah Juhany</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Abdullah Juhany</span></div>
+                        </div>
+                        
+                        <!-- Bilals -->
+                        <div class="schedule-column">
+                            <div class="column-header">Expected Bilals</div>
+                            <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value" id="bilal-fajr">-</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value" id="bilal-dhuhr">-</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value" id="bilal-asr">-</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value" id="bilal-maghrib">-</span></div>
+                            <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value" id="bilal-isha">-</span></div>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Mecca Bilals Column (Dynamic Day-by-Day Schedule) -->
-                <div class="schedule-column">
-                    <div class="column-header">Mecca Expected Bilals</div>
-                    <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value" id="bilal-fajr">-</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value" id="bilal-dhuhr">-</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value" id="bilal-asr">-</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value" id="bilal-maghrib">-</span></div>
-                    <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value" id="bilal-isha">-</span></div>
+
+                <!-- MADINAH SCHEDULE BLOCK (DIAMBIL DARI image_106624.png) -->
+                <div class="schedule-block">
+                    <div class="block-title">Madinah Schedule (14 - 20 Dzulhijjah 1447H)</div>
+                    <div class="schedule-column" style="background-color: #1e1e1e;">
+                        <div class="column-header">Expected Imams</div>
+                        <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span></div>
+                        <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Dr. Muhammad Al-Burhaji</span></div>
+                        <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Dr. Khalid Al-Muhanna</span></div>
+                        <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Saleh Al-Maghamsi</span></div>
+                        <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Dr. Abdullah Al-Qarafi</span></div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- SOCIAL MEDIA WIDGET -->
         <div class="social-widget">
-            <div class="widget-title">📢 Follow Our Social Media</div>
+            <div class="widget-title">Follow Our Social Media</div>
             <div class="social-grid">
                 <a href="https://www.youtube.com/@TasjeelatAlharamainAssharifain" target="_blank" class="social-link yt-color">YouTube</a>
                 <a href="https://x.com/tasjeelatharsha" target="_blank" class="social-link x-color">X / Twitter</a>
                 <a href="https://t.me/tasjeelatalharamainassharifain" target="_blank" class="social-link tg-color">Telegram</a>
                 <a href="https://whatsapp.com/channel/0029VbD0qvjD8SE29FJ96v0k" target="_blank" class="social-link wa-color">WhatsApp</a>
             </div>
+        </div>
+    </div>
+
+    <!-- ADHAN POPUP HTML -->
+    <div id="azanPopup" class="azan-popup">
+        <div class="azan-title">ADHAN TIME ALERT</div>
+        <div class="azan-body">
+            <div id="azanCurrentPrayer">Current Waktu: <b>-</b></div>
+            <div id="azanNextPrayer">Next: <b>-</b></div>
+        </div>
+        <div class="azan-footer">
+            Let's prepare ourselves for prayer.
         </div>
     </div>
 
@@ -677,6 +765,9 @@
 
             // 6. Update Dynamic Info Box Text
             updateDynamicBoxText(meccaToday, madinahToday);
+
+            // 7. Monitor Change for Adhan Popup
+            monitorPrayerChange();
         }
 
         /* DYNAMIC BILAL REFRESH LOGIC */
@@ -761,7 +852,7 @@
 
                 mediaRecorder.start(1000);
                 isRecording = true;
-                recordBtn.innerHTML = "⏹️ Stop Recording";
+                recordBtn.innerHTML = "Stop Recording";
                 recordBtn.classList.add('recording');
                 recordStatus.style.display = 'flex';
                 startTime = Date.now();
@@ -782,6 +873,46 @@
             const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
             const seconds = (totalSeconds % 60).toString().padStart(2, '0');
             document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+        }
+
+        /* ADHAN ALERT SYSTEM */
+        let lastDisplayedPrayer = localStorage.getItem("lastPrayer") || "";
+
+        function showAzanPopup(currentPrayer, nextPrayerText) {
+            document.getElementById("azanCurrentPrayer").innerHTML = "Current Waktu: <b>" + currentPrayer + "</b>";
+            document.getElementById("azanNextPrayer").innerHTML = "Next: <b>" + nextPrayerText + "</b>";
+
+            const popup = document.getElementById("azanPopup");
+            popup.style.display = "block";
+
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 15000);
+        }
+
+        function monitorPrayerChange() {
+            let currentElem, nextElem;
+            if (currentChannelName === 'SunnahKSA_SD') {
+                currentElem = document.querySelector("#madinahCurrentPrayer .highlight-text");
+                nextElem = document.querySelector("#madinahNextPrayer .highlight-text");
+            } else {
+                currentElem = document.querySelector("#currentPrayer .highlight-text");
+                nextElem = document.querySelector("#nextPrayer .highlight-text");
+            }
+
+            if (!currentElem || !nextElem) return;
+
+            const currentPrayer = currentElem.textContent.trim();
+            const nextPrayerText = nextElem.textContent.trim();
+
+            if (currentPrayer && currentPrayer !== "-" && currentPrayer !== "No Data" && currentPrayer !== lastDisplayedPrayer) {
+                if (lastDisplayedPrayer !== "") {
+                    showAzanPopup(currentPrayer, nextPrayerText);
+                }
+                
+                lastDisplayedPrayer = currentPrayer;
+                localStorage.setItem("lastPrayer", currentPrayer);
+            }
         }
     </script>
 </body>
