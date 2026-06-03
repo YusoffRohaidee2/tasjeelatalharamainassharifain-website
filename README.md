@@ -7,4 +7,4 @@
 🤝 Your Most Trusted Source: Reliable, premium, and highly accurate—we are your ultimate platform for Haramain content.
 
 - 🌐 Access our website here:
-yusoffrohaidee2.github.io/tasjeelatalharamainassharifain-website/
+https://yusoffrohaidee2.github.io/tasjeelatalharamainassharifain-website/
