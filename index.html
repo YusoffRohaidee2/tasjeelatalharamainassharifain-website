@@ -40,7 +40,7 @@
         }
         .widget-card {
             flex: 1;
-            min-width: 250px;
+            min-width: 200px;
             background-color: #1e1e1e;
             border: 1px solid #333;
             border-radius: 8px;
@@ -48,7 +48,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .widget-title {
-            font-size: 0.9em;
+            font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #a0a0a0;
@@ -68,13 +68,13 @@
             line-height: 1.4;
         }
         .prayer-status {
-            font-size: 1.2em;
+            font-size: 1.15em;
             font-weight: bold;
             color: #d4af37;
             margin-bottom: 5px;
         }
         .prayer-next {
-            font-size: 0.95em;
+            font-size: 0.9em;
             color: #cccccc;
         }
         .highlight-text {
@@ -82,21 +82,38 @@
             font-weight: bold;
         }
 
-        /* RUNNING TEXT TICKER */
-        .ticker-container {
+        /* STATIC TEXT BOX (DYNAMIC STYLES) */
+        .static-info-container {
             width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 15px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        /* Tema Warna Mekah (Merah) */
+        .theme-mecca {
             background-color: #1a0000;
             border: 1px solid #cc0000;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            padding: 8px 0;
         }
-        .ticker-text {
+        .theme-mecca .static-info-text {
             color: #ff4444;
+        }
+        /* Tema Warna Madinah (Hijau/Emas) */
+        .theme-madinah {
+            background-color: #001a05;
+            border: 1px solid #00aa22;
+        }
+        .theme-madinah .static-info-text {
+            color: #22ff55;
+        }
+        .static-info-text {
             font-weight: bold;
             font-size: 0.95em;
-            white-space: nowrap;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.5;
         }
 
         /* PLAYER CONTAINER */
@@ -264,7 +281,8 @@
     <div class="container">
         <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
-            <div class="widget-card">
+            <!-- DUAL CLOCK CARD (UPDATED LABELS TO SAUDI ARABIA UTC+3) -->
+            <div class="widget-card" style="flex: 1.2; min-width: 280px;">
                 <div class="widget-title">🕒 Dual Clock & Date</div>
                 <div style="display: flex; justify-content: space-between;">
                     <div>
@@ -272,25 +290,33 @@
                         <div class="time-display" id="systemTime">00:00:00</div>
                     </div>
                     <div style="text-align: right;">
-                        <div style="font-size: 0.8em; color: #d4af37;">Makkah Time:</div>
+                        <div style="font-size: 0.8em; color: #d4af37;">Saudi Arabia (UTC+3):</div>
                         <div class="time-display" id="makkahTime" style="color: #d4af37;">00:00:00</div>
                     </div>
                 </div>
                 <div class="time-date" id="makkahDate">Loading date...</div>
             </div>
 
+            <!-- MECCA PRAYER INFO CARD -->
             <div class="widget-card">
                 <div class="widget-title">🕌 Makkah Prayer Info</div>
                 <div class="prayer-status" id="currentPrayer">Current: <span class="highlight-text">-</span></div>
                 <div class="prayer-next" id="nextPrayer">Next: <span class="highlight-text">-</span></div>
             </div>
+
+            <!-- MADINAH PRAYER INFO CARD -->
+            <div class="widget-card">
+                <div class="widget-title">🕌 Madinah Prayer Info</div>
+                <div class="prayer-status" id="madinahCurrentPrayer">Current: <span class="highlight-text">-</span></div>
+                <div class="prayer-next" id="madinahNextPrayer">Next: <span class="highlight-text">-</span></div>
+            </div>
         </div>
 
-        <!-- RUNNING TEXT TICKER (RED) -->
-        <div class="ticker-container">
-            <marquee class="ticker-text" scrollamount="5" behavior="scroll" direction="left" id="runningTicker">
-                Loading information announcement...
-            </marquee>
+        <!-- STATIC INFO BOX (THEME CHANGED VIA JS BASED ON CHANNEL) -->
+        <div class="static-info-container theme-mecca" id="dynamicInfoBox">
+            <div class="static-info-text" id="dynamicInfoText">
+                Loading prayer times information...
+            </div>
         </div>
 
         <!-- VIDEO PLAYER -->
@@ -356,12 +382,12 @@
         const player = videojs('tasjeelat-player');
         let currentChannelName = "Saudiya_SD";
 
-        // Default stream load (Saudiya SD)
         player.src({
             src: 'https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8',
             type: 'application/x-mpegURL'
         });
 
+        // ACTION WHEN CHANGING STREAM
         function changeStream(url, buttonElement, channelName) {
             if (isRecording) {
                 alert("Please stop recording before switching channels!");
@@ -375,6 +401,17 @@
             const buttons = document.querySelectorAll('.stream-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
+
+            // Instantly update layout look based on selected channel
+            const infoBox = document.getElementById('dynamicInfoBox');
+            if (channelName === 'SunnahKSA_SD') {
+                infoBox.className = "static-info-container theme-madinah";
+            } else {
+                infoBox.className = "static-info-container theme-mecca";
+            }
+            
+            // Force text update immediately
+            updateClocksAndPrayers();
         }
 
         /* MAKKAH PRAYER TIME SCHEDULE */
@@ -445,108 +482,119 @@
             1:  { Fajr: "04:05", Sunrise: "05:37", Dhuhr: "12:25", Asr: "15:46", Maghrib: "19:14", Isha: "20:44" }
         };
 
-        /* CLOCK, PRAYER & TICKER SYSTEM LOGIC */
+        /* HELPER FOR CALCULATING PRAYER STATUS */
+        function getPrayerStatus(currentMinutes, schedule, dayNum, fullSchedule) {
+            const fajrMin = timeToMinutes(schedule.Fajr);
+            const sunriseMin = timeToMinutes(schedule.Sunrise);
+            const dhuhrMin = timeToMinutes(schedule.Dhuhr);
+            const asrMin = timeToMinutes(schedule.Asr);
+            const maghribMin = timeToMinutes(schedule.Maghrib);
+            const isyaMin = timeToMinutes(schedule.Isha);
+
+            let current = "";
+            let next = "";
+            let nextTime = "";
+
+            if (currentMinutes >= isyaMin) {
+                current = "Isha";
+                next = "Fajr (Tomorrow)";
+                const tomorrowSchedule = fullSchedule[dayNum + 1] || fullSchedule[1];
+                nextTime = tomorrowSchedule.Fajr;
+            } else if (currentMinutes >= maghribMin) {
+                current = "Maghrib";
+                next = "Isha";
+                nextTime = schedule.Isha;
+            } else if (currentMinutes >= asrMin) {
+                current = "Asr";
+                next = "Maghrib";
+                nextTime = schedule.Maghrib;
+            } else if (currentMinutes >= dhuhrMin) {
+                current = "Dhuhr";
+                next = "Asr";
+                nextTime = schedule.Asr;
+            } else if (currentMinutes >= sunriseMin) {
+                current = "Sunrise";
+                next = "Dhuhr";
+                nextTime = schedule.Dhuhr;
+            } else if (currentMinutes >= fajrMin) {
+                current = "Fajr";
+                next = "Sunrise";
+                nextTime = schedule.Sunrise;
+            } else {
+                current = "Isha (Last Night)";
+                next = "Fajr";
+                nextTime = schedule.Fajr;
+            }
+            return { current, next, nextTime };
+        }
+
+        const timeToMinutes = (timeStr) => {
+            const [h, m] = timeStr.split(':').map(Number);
+            return h * 60 + m;
+        };
+
+        /* MAIN CLOCK & PRAYER TIMERS SYSTEM */
         function updateClocksAndPrayers() {
             const now = new Date();
 
             // 1. System Time
             document.getElementById('systemTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
 
-            // 2. Makkah Time
+            // 2. Saudi Arabia Time & Date (Updated Labels)
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
             document.getElementById('makkahTime').innerText = makkahTimeString;
 
             const makkahDateString = now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('makkahDate').innerText = `Makkah Date: ${makkahDateString}`;
+            document.getElementById('makkahDate').innerText = `Saudi Arabia Date: ${makkahDateString}`;
             
             const makkahDay = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric' }));
             const makkahMonthNumeric = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', month: 'numeric' }));
 
-            // 3. Prayer Schedule Widget
-            const daySchedule = prayerSchedule[makkahDay];
-            if (!daySchedule || (makkahMonthNumeric !== 6 && makkahMonthNumeric !== 7)) {
-                document.getElementById('currentPrayer').innerHTML = "Current: <span class='highlight-text'>No Data</span>";
-                document.getElementById('nextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
-                return;
-            }
-
-            const timeToMinutes = (timeStr) => {
-                const [h, m] = timeStr.split(':').map(Number);
-                return h * 60 + m;
-            };
-
             const currentMakkahMinutes = timeToMinutes(makkahTimeString.substring(0, 5));
 
-            const fajrMin = timeToMinutes(daySchedule.Fajr);
-            const sunriseMin = timeToMinutes(daySchedule.Sunrise);
-            const dhuhrMin = timeToMinutes(daySchedule.Dhuhr);
-            const asrMin = timeToMinutes(daySchedule.Asr);
-            const maghribMin = timeToMinutes(daySchedule.Maghrib);
-            const isyaMin = timeToMinutes(daySchedule.Isha);
-
-            let currentPrayerName = "";
-            let nextPrayerName = "";
-            let nextPrayerTime = "";
-
-            if (currentMakkahMinutes >= isyaMin) {
-                currentPrayerName = "Isha";
-                nextPrayerName = "Fajr (Tomorrow)";
-                const tomorrowSchedule = prayerSchedule[makkahDay + 1] || prayerSchedule[1];
-                nextPrayerTime = tomorrowSchedule.Fajr;
-            } else if (currentMakkahMinutes >= maghribMin) {
-                currentPrayerName = "Maghrib";
-                nextPrayerName = "Isha";
-                nextPrayerTime = daySchedule.Isha;
-            } else if (currentMakkahMinutes >= asrMin) {
-                currentPrayerName = "Asr";
-                nextPrayerName = "Maghrib";
-                nextPrayerTime = daySchedule.Maghrib;
-            } else if (currentMakkahMinutes >= dhuhrMin) {
-                currentPrayerName = "Dhuhr";
-                nextPrayerName = "Asr";
-                nextPrayerTime = daySchedule.Asr;
-            } else if (currentMakkahMinutes >= sunriseMin) {
-                currentPrayerName = "Sunrise";
-                nextPrayerName = "Dhuhr";
-                nextPrayerTime = daySchedule.Dhuhr;
-            } else if (currentMakkahMinutes >= fajrMin) {
-                currentPrayerName = "Fajr";
-                nextPrayerName = "Sunrise";
-                nextPrayerTime = daySchedule.Sunrise;
+            // 3. Process Mecca Prayer Data
+            const meccaToday = prayerSchedule[makkahDay];
+            if (meccaToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
+                const meccaStatus = getPrayerStatus(currentMakkahMinutes, meccaToday, makkahDay, prayerSchedule);
+                document.getElementById('currentPrayer').innerHTML = `Current: <span class="highlight-text">${meccaStatus.current}</span>`;
+                document.getElementById('nextPrayer').innerHTML = `Next: <span class="highlight-text">${meccaStatus.next} (${meccaStatus.nextTime})</span>`;
             } else {
-                currentPrayerName = "Isha (Last Night)";
-                nextPrayerName = "Fajr";
-                nextPrayerTime = daySchedule.Fajr;
+                document.getElementById('currentPrayer').innerHTML = "Current: <span class='highlight-text'>No Data</span>";
+                document.getElementById('nextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            document.getElementById('currentPrayer').innerHTML = `Current: <span class="highlight-text">${currentPrayerName}</span>`;
-            document.getElementById('nextPrayer').innerHTML = `Next: <span class="highlight-text">${nextPrayerName} (${nextPrayerTime})</span>`;
+            // 4. Process Madinah Prayer Data
+            const madinahToday = madinahSchedule[makkahDay];
+            if (madinahToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
+                const madinahStatus = getPrayerStatus(currentMakkahMinutes, madinahToday, makkahDay, madinahSchedule);
+                document.getElementById('madinahCurrentPrayer').innerHTML = `Current: <span class="highlight-text">${madinahStatus.current}</span>`;
+                document.getElementById('madinahNextPrayer').innerHTML = `Next: <span class="highlight-text">${madinahStatus.next} (${madinahStatus.nextTime})</span>`;
+            } else {
+                document.getElementById('madinahCurrentPrayer').innerHTML = "Current: <span class='highlight-text'>No Data</span>";
+                document.getElementById('madinahNextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
+            }
 
-            // 4. Update Running Text dynamically based on sysdate prayer data
-            updateTickerText(makkahDay, daySchedule);
+            // 5. Update Dynamic Info Box Text based on current active channel
+            updateDynamicBoxText(meccaToday, madinahToday);
         }
 
-        /* DYNAMIC TICKER GENERATOR */
-        let lastLoggedDay = null;
-        function updateTickerText(dayNum, meccaToday) {
-            if (lastLoggedDay === dayNum) return; // Mengelakkan pembaziran proses DOM refresh setiap saat
-            lastLoggedDay = dayNum;
-
-            const madinahToday = madinahSchedule[dayNum];
+        /* DYNAMIC BOX TEXT UPDATE LOGIC */
+        function updateDynamicBoxText(meccaToday, madinahToday) {
+            const infoTextElement = document.getElementById('dynamicInfoText');
             
-            let meccaString = "Mecca Prayer Time for today: No Data Available";
-            if (meccaToday) {
-                meccaString = `Mecca Prayer Time for today: Fajr: ${meccaToday.Fajr} | Sunrise: ${meccaToday.Sunrise} | Dhuhr: ${meccaToday.Dhuhr} | Asr: ${meccaToday.Asr} | Maghrib: ${meccaToday.Maghrib} | Isha: ${meccaToday.Isha}`;
+            if (currentChannelName === 'SunnahKSA_SD') {
+                if (madinahToday) {
+                    infoTextElement.innerText = `Madinah Prayer Time for today: Fajr: ${madinahToday.Fajr} | Sunrise: ${madinahToday.Sunrise} | Dhuhr: ${madinahToday.Dhuhr} | Asr: ${madinahToday.Asr} | Maghrib: ${madinahToday.Maghrib} | Isha: ${madinahToday.Isha}`;
+                } else {
+                    infoTextElement.innerText = "Madinah Prayer Time for today: No Data Available";
+                }
+            } else {
+                if (meccaToday) {
+                    infoTextElement.innerText = `Mecca Prayer Time for today: Fajr: ${meccaToday.Fajr} | Sunrise: ${meccaToday.Sunrise} | Dhuhr: ${meccaToday.Dhuhr} | Asr: ${meccaToday.Asr} | Maghrib: ${meccaToday.Maghrib} | Isha: ${meccaToday.Isha}`;
+                } else {
+                    infoTextElement.innerText = "Mecca Prayer Time for today: No Data Available";
+                }
             }
-
-            let madinahString = "Madinah Prayer Time for today: No Data Available";
-            if (madinahToday) {
-                madinahString = `Madinah Prayer Time for today: Fajr: ${madinahToday.Fajr} | Sunrise: ${madinahToday.Sunrise} | Dhuhr: ${madinahToday.Dhuhr} | Asr: ${madinahToday.Asr} | Maghrib: ${madinahToday.Maghrib} | Isha: ${madinahToday.Isha}`;
-            }
-
-            const staticNotice = "Welcome to the Tasjeelat Al-Haramain As-Sharifain | We here will provide you with live streaming 24/7 for channels like Quran Kareem (Mecca) & Sunnah Nabawi (Madinah) | We also broadcast live prayers here | We are sorry because the HD feeds that we get are faulty (couldn't play) | ";
-            
-            document.getElementById('runningTicker').innerText = staticNotice + meccaString + " | " + madinahString + " |";
         }
 
         setInterval(updateClocksAndPrayers, 1000);
