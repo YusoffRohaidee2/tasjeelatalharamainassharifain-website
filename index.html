@@ -125,8 +125,8 @@
             position: relative;
         }
         
-        /* Muncul apabila cursor digerakkan (hover) atas video player */
-        .video-holder:hover .stream-epg-overlay {
+        /* Hanya tunjuk overlay kalau tiada class .hide-overlay */
+        .video-holder:not(.hide-overlay):hover .stream-epg-overlay {
             opacity: 1;
             pointer-events: auto;
         }
@@ -241,45 +241,45 @@
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
             background-color: #1e1e1e;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             border: 1px solid #333;
             justify-content: space-between;
         }
         .category-group {
             flex: 1;
-            min-width: 240px;
+            min-width: 180px;
             background: #252525;
-            padding: 12px;
+            padding: 10px;
             border-radius: 6px;
             border: 1px solid #444;
         }
         .category-title {
-            font-size: 1em;
+            font-size: 0.9em;
             font-weight: bold;
             color: #d4af37;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-bottom: 1px solid #444;
-            padding-bottom: 6px;
+            padding-bottom: 4px;
             text-align: center;
         }
         .sub-buttons {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
         .stream-btn {
             background-color: #1a1a1a;
             color: #ccc;
             border: 1px solid #333;
-            padding: 10px 12px;
+            padding: 6px 10px;
             text-align: center;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 0.9em;
+            font-size: 0.85em;
             width: 100%;
             box-sizing: border-box;
         }
@@ -430,7 +430,6 @@
     <div class="container">
         <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
-            <!-- DUAL CLOCK CARD -->
             <div class="widget-card" style="flex: 1.2; min-width: 280px;">
                 <div class="widget-title">Dual Clock & Date</div>
                 <div style="display: flex; justify-content: space-between;">
@@ -446,14 +445,12 @@
                 <div class="time-date" id="makkahDate">Loading date...</div>
             </div>
 
-            <!-- MECCA PRAYER INFO CARD -->
             <div class="widget-card">
                 <div class="widget-title">Makkah Prayer Info</div>
                 <div class="prayer-status" id="currentPrayer">Current: <span class="highlight-text">-</span></div>
                 <div class="prayer-next" id="nextPrayer">Next: <span class="highlight-text">-</span></div>
             </div>
 
-            <!-- MADINAH PRAYER INFO CARD -->
             <div class="widget-card">
                 <div class="widget-title">Madinah Prayer Info</div>
                 <div class="prayer-status" id="madinahCurrentPrayer">Current: <span class="highlight-text">-</span></div>
@@ -468,10 +465,11 @@
             </div>
         </div>
 
-        <!-- VIDEO PLAYER WITH IN-STREAM EPG OVERLAY -->
-        <div class="video-holder">
+        <!-- VIDEO PLAYER -->
+        <!-- Default load guna QuranKSA_HD1, jadi overlay aktif pada permulaan -->
+        <div class="video-holder" id="videoHolder">
             <div id="epgOverlay" class="stream-epg-overlay">
-                <div class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
+                <div id="epgHeader" class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
                 <div id="epgTitle" class="stream-epg-title">Holy Quran Recitation</div>
                 <div id="epgDesc" class="stream-epg-desc">Beautiful and melodious recitations of the Holy Quran broadcasted live from Makkah.</div>
                 <div class="stream-epg-time">
@@ -498,7 +496,7 @@
             </div>
         </div>
 
-        <!-- HORIZONTAL PLAYLIST (UPDATED CHANNELS) -->
+        <!-- PLAYLIST HORIZONTAL -->
         <div class="playlist-horizontal">
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
@@ -508,20 +506,18 @@
             </div>
 
             <div class="category-group">
-                <div class="category-title">Al-Quran Al-Kareem (Makkah)</div>
+                <div class="category-title">QuranKSA</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn active" onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8', this, 'QuranKSA_HD1', 'mecca')">Quran Makkah HD (1)</button>
-                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/quran/chunklist_w235124402.m3u8', this, 'QuranKSA_HD2', 'mecca')">Quran Makkah HD (2)</button>
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD', 'mecca')">Quran Makkah SD</button>
+                    <button class="stream-btn active" onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8', this, 'QuranKSA_HD1', 'mecca')">HD (1)</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/quran/chunklist_w235124402.m3u8', this, 'QuranKSA_HD2', 'mecca')">HD (2)</button>
                 </div>
             </div>
 
             <div class="category-group">
-                <div class="category-title">As-Sunnah An-Nabawiyyah (Madinah)</div>
+                <div class="category-title">SunnahKSA</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8', this, 'SunnahKSA_HD1', 'madinah')">Sunnah Madinah HD (1)</button>
-                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/chunklist_w940022134.m3u8', this, 'SunnahKSA_HD2', 'madinah')">Sunnah Madinah HD (2)</button>
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this, 'SunnahKSA_SD', 'madinah')">Sunnah Madinah SD</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8', this, 'SunnahKSA_HD1', 'madinah')">HD (1)</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/chunklist_w940022134.m3u8', this, 'SunnahKSA_HD2', 'madinah')">HD (2)</button>
                 </div>
             </div>
         </div>
@@ -594,9 +590,8 @@
     <script>
         const player = videojs('tasjeelat-player');
         let currentChannelName = "QuranKSA_HD1";
-        let currentHaramRegion = "mecca"; // Menentukan tema aktif ("mecca" / "madinah")
+        let currentHaramRegion = "mecca";
 
-        // Set default stream ke Quran Makkah HD (1) semasa mula-mula load
         player.src({
             src: 'https://win.holol.com/live/quran/playlist.m3u8',
             type: 'application/x-mpegURL'
@@ -617,7 +612,6 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
 
-            // Kemaskini warna kotak maklumat teks statik mengikut kawasan (Mekah atau Madinah)
             const infoBox = document.getElementById('dynamicInfoBox');
             if (region === 'madinah') {
                 infoBox.className = "static-info-container theme-madinah";
@@ -625,19 +619,20 @@
                 infoBox.className = "static-info-container theme-mecca";
             }
             
-            // Paparkan widget EPG hanya untuk saluran Al-Quran Makkah (HD1, HD2 atau SD)
-            const overlay = document.getElementById('epgOverlay');
+            const videoHolder = document.getElementById('videoHolder');
+            
+            // EPG HANYA UNTUK SALURAN AL-QURAN AL-KAREEM TV (QuranKSA)
             if (channelName.startsWith('QuranKSA_')) {
-                overlay.style.display = "block";
+                videoHolder.classList.remove('hide-overlay'); // Benarkan hover overlay muncul
+                updateLiveEPG();
             } else {
-                overlay.style.display = "none";
+                videoHolder.classList.add('hide-overlay');    // Sekat terus hover overlay daripada muncul
             }
 
             updateClocksAndPrayers();
-            updateLiveEPG();
         }
 
-        /* DATA JADUAL TELEVISYEN (ENGLISH) */
+        /* DATA JADUAL TELEVISYEN HANYA UNTUK AL-QURAN AL-KAREEM TV */
         const quranTvSchedule = [
             { start: "00:00", end: "02:00", title: "Holy Quran Recitation", desc: "Beautiful and melodious recitations of the Holy Quran broadcasted live from Masjid al-Haram, Makkah." },
             { start: "02:00", end: "04:00", title: "Tahajjud & Quranic Recitation", desc: "Late night prayers and tranquil recitations filled with peace and spirituality before dawn." },
@@ -653,7 +648,6 @@
             { start: "22:00", end: "24:00", title: "Holy Quran Recitation", desc: "Late night continuous broadcast of blessed Quranic recitations to accompany your night." }
         ];
 
-        /* LOGIK UPDATE OVERLAY EPG MENGIKUT MASA MEKAH */
         function updateLiveEPG() {
             if (!currentChannelName.startsWith('QuranKSA_')) return;
 
@@ -704,7 +698,7 @@
             6: { Fajr: "Syeikh Naif Fiedeh", Dhuhr: "Syeikh Turki Al-Hassani", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" }
         };
 
-        /* JADUAL WAKTU SOLAT MAKKAH */
+        /* JADUAL WAKTU SOLAT MAKKAH & MADINAH */
         const prayerSchedule = {
             2:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:35", Maghrib: "19:00", Isha: "20:30" },
             3:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:36", Maghrib: "19:00", Isha: "20:30" },
@@ -738,7 +732,6 @@
             1:  { Fajr: "04:14", Sunrise: "05:42", Dhuhr: "12:25", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" }
         };
 
-        /* JADUAL WAKTU SOLAT MADINAH */
         const madinahSchedule = {
             2:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
             3:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
@@ -810,10 +803,8 @@
         function updateClocksAndPrayers() {
             const now = new Date();
 
-            // 1. System Time (Local Browser)
             document.getElementById('systemTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
 
-            // 2. Saudi Arabia Time & Date
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
             document.getElementById('makkahTime').innerText = makkahTimeString;
 
@@ -829,7 +820,6 @@
 
             const currentMakkahMinutes = timeToMinutes(makkahTimeString.substring(0, 5));
 
-            // 3. Process Mecca Prayer Info
             const meccaToday = prayerSchedule[makkahDay];
             if (meccaToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
                 const meccaStatus = getPrayerStatus(currentMakkahMinutes, meccaToday, makkahDay, prayerSchedule);
@@ -840,7 +830,6 @@
                 document.getElementById('nextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            // 4. Process Madinah Prayer Info
             const madinahToday = madinahSchedule[makkahDay];
             if (madinahToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
                 const madinahStatus = getPrayerStatus(currentMakkahMinutes, madinahToday, makkahDay, madinahSchedule);
@@ -851,7 +840,6 @@
                 document.getElementById('madinahNextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            // 5. Update Bilal Dynamic Grid Data
             const todayBilal = bilalWeeklySchedule[saudiDayIndex];
             if (todayBilal) {
                 document.getElementById('bilal-fajr').innerText = todayBilal.Fajr;
@@ -861,7 +849,6 @@
                 document.getElementById('bilal-isha').innerText = todayBilal.Isha;
             }
 
-            // 6. Update Dynamic Info Box Text berdasarkan rantau aktif (bukan sahaja nama saluran)
             const infoTextElement = document.getElementById('dynamicInfoText');
             if (currentHaramRegion === 'madinah') {
                 if (madinahToday) {
@@ -877,10 +864,7 @@
                 }
             }
 
-            // 7. Monitor Change for Adhan Popup
             monitorPrayerChange();
-            
-            // 8. Auto Refresh In-Stream EPG Data (Waktu Makkah)
             updateLiveEPG();
         }
 
@@ -962,7 +946,6 @@
             }
         }
 
-        // Jalankan kit jam setiap 1 saat
         setInterval(updateClocksAndPrayers, 1000);
         window.onload = () => {
             updateClocksAndPrayers();
