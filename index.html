@@ -250,9 +250,9 @@
         }
         .category-group {
             flex: 1;
-            min-width: 220px;
+            min-width: 240px;
             background: #252525;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             border: 1px solid #444;
         }
@@ -260,9 +260,9 @@
             font-size: 1em;
             font-weight: bold;
             color: #d4af37;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-bottom: 1px solid #444;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
             text-align: center;
         }
         .sub-buttons {
@@ -498,26 +498,30 @@
             </div>
         </div>
 
-        <!-- HORIZONTAL PLAYLIST -->
+        <!-- HORIZONTAL PLAYLIST (UPDATED CHANNELS) -->
         <div class="playlist-horizontal">
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD')">Saudiya SD</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD', 'mecca')">Saudiya SD</button>
                 </div>
             </div>
 
             <div class="category-group">
-                <div class="category-title">Al-Quran Al-Kareem TV</div>
+                <div class="category-title">Al-Quran Al-Kareem (Makkah)</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn active" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD')">Quran Makkah SD</button>
+                    <button class="stream-btn active" onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8', this, 'QuranKSA_HD1', 'mecca')">Quran Makkah HD (1)</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/quran/chunklist_w235124402.m3u8', this, 'QuranKSA_HD2', 'mecca')">Quran Makkah HD (2)</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD', 'mecca')">Quran Makkah SD</button>
                 </div>
             </div>
 
             <div class="category-group">
-                <div class="category-title">As-Sunnah An-Nabawiyyah TV</div>
+                <div class="category-title">As-Sunnah An-Nabawiyyah (Madinah)</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this, 'SunnahKSA_SD')">Sunnah Madinah SD</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8', this, 'SunnahKSA_HD1', 'madinah')">Sunnah Madinah HD (1)</button>
+                    <button class="stream-btn" onclick="changeStream('https://win.holol.com/live/sunnah/chunklist_w940022134.m3u8', this, 'SunnahKSA_HD2', 'madinah')">Sunnah Madinah HD (2)</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this, 'SunnahKSA_SD', 'madinah')">Sunnah Madinah SD</button>
                 </div>
             </div>
         </div>
@@ -589,20 +593,22 @@
 
     <script>
         const player = videojs('tasjeelat-player');
-        let currentChannelName = "QuranKSA_SD";
+        let currentChannelName = "QuranKSA_HD1";
+        let currentHaramRegion = "mecca"; // Menentukan tema aktif ("mecca" / "madinah")
 
-        // Set default stream ke Quran Makkah
+        // Set default stream ke Quran Makkah HD (1) semasa mula-mula load
         player.src({
-            src: 'https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8',
+            src: 'https://win.holol.com/live/quran/playlist.m3u8',
             type: 'application/x-mpegURL'
         });
 
-        function changeStream(url, buttonElement, channelName) {
+        function changeStream(url, buttonElement, channelName, region) {
             if (isRecording) {
                 alert("Please stop recording before switching channels!");
                 return;
             }
             currentChannelName = channelName;
+            currentHaramRegion = region;
 
             player.src({ src: url, type: 'application/x-mpegURL' });
             player.play().catch(() => console.log("Autoplay blocked"));
@@ -611,16 +617,17 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
 
+            // Kemaskini warna kotak maklumat teks statik mengikut kawasan (Mekah atau Madinah)
             const infoBox = document.getElementById('dynamicInfoBox');
-            if (channelName === 'SunnahKSA_SD') {
+            if (region === 'madinah') {
                 infoBox.className = "static-info-container theme-madinah";
             } else {
                 infoBox.className = "static-info-container theme-mecca";
             }
             
-            // Sembunyikan atau tunjukkan EPG bergantung pada saluran
+            // Paparkan widget EPG hanya untuk saluran Al-Quran Makkah (HD1, HD2 atau SD)
             const overlay = document.getElementById('epgOverlay');
-            if (channelName === 'QuranKSA_SD') {
+            if (channelName.startsWith('QuranKSA_')) {
                 overlay.style.display = "block";
             } else {
                 overlay.style.display = "none";
@@ -648,11 +655,9 @@
 
         /* LOGIK UPDATE OVERLAY EPG MENGIKUT MASA MEKAH */
         function updateLiveEPG() {
-            if (currentChannelName !== 'QuranKSA_SD') return;
+            if (!currentChannelName.startsWith('QuranKSA_')) return;
 
             const now = new Date();
-            
-            // Paksa sistem mengira jam & minit mengikut Zon Waktu Arab Saudi (Asia/Riyadh)
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
             const [makkahHours, makkahMinutes] = makkahTimeString.split(':').map(Number);
             const makkahTotalMinutes = makkahHours * 60 + makkahMinutes;
@@ -856,9 +861,9 @@
                 document.getElementById('bilal-isha').innerText = todayBilal.Isha;
             }
 
-            // 6. Update Dynamic Info Box Text
+            // 6. Update Dynamic Info Box Text berdasarkan rantau aktif (bukan sahaja nama saluran)
             const infoTextElement = document.getElementById('dynamicInfoText');
-            if (currentChannelName === 'SunnahKSA_SD') {
+            if (currentHaramRegion === 'madinah') {
                 if (madinahToday) {
                     infoTextElement.innerText = `Madinah Prayer Time for today: Fajr: ${madinahToday.Fajr} | Sunrise: ${madinahToday.Sunrise} | Dhuhr: ${madinahToday.Dhuhr} | Asr: ${madinahToday.Asr} | Maghrib: ${madinahToday.Maghrib} | Isha: ${madinahToday.Isha}`;
                 } else {
@@ -891,7 +896,7 @@
 
             if (!isRecording) {
                 recordedChunks = []; let stream;
-                try { stream = videoElement.captureStream ? videoElement.captureStream() : videoElement.mozCaptureStream(); } catch (e) { alert("Recording error (CORS issue)."); return; }
+                try { stream = videoElement.captureStream ? videoElement.captureStream() : videoElement.mozCaptureStream(); } catch (e) { alert("Recording error (CORS issue/unsupported stream type)."); return; }
 
                 let options = { mimeType: 'video/webm;codecs=vp9,opus' };
                 if (!MediaRecorder.isTypeSupported(options.mimeType)) { options = { mimeType: 'video/webm;codecs=vp8,opus' }; }
@@ -931,7 +936,7 @@
 
         function monitorPrayerChange() {
             let currentElem, nextElem;
-            if (currentChannelName === 'SunnahKSA_SD') {
+            if (currentHaramRegion === 'madinah') {
                 currentElem = document.querySelector("#madinahCurrentPrayer .highlight-text");
                 nextElem = document.querySelector("#madinahNextPrayer .highlight-text");
             } else {
