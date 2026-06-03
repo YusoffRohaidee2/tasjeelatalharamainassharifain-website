@@ -82,7 +82,7 @@
             font-weight: bold;
         }
 
-        /* STATIC TEXT BOX (DYNAMIC STYLES) */
+        /* STATIC TEXT BOX */
         .static-info-container {
             width: 100%;
             border-radius: 5px;
@@ -114,7 +114,7 @@
             line-height: 1.5;
         }
 
-        /* PLAYER CONTAINER */
+        /* PLAYER CONTAINER & HOVER OVERLAY */
         .video-holder {
             width: 100%;
             background: #000;
@@ -122,7 +122,71 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            position: relative;
         }
+        
+        /* Muncul apabila cursor digerakkan (hover) atas video player */
+        .video-holder:hover .stream-epg-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .stream-epg-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            width: 280px;
+            z-index: 10;
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .stream-epg-header {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .stream-epg-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 4px;
+        }
+        .stream-epg-desc {
+            font-size: 11.5px;
+            color: #dddddd;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .stream-epg-time {
+            font-size: 11px;
+            color: #a0a0a0;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .stream-epg-progress-bg {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 2px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .stream-epg-progress-bar {
+            background: #d4af37;
+            height: 100%;
+            width: 0%;
+            transition: width 1s linear;
+        }
+
         /* RECORD PANEL */
         .record-control-panel {
             display: flex;
@@ -231,7 +295,7 @@
             border-color: #fff;
         }
 
-        /* HARAMAIN SCHEDULES WIDGET */
+        /* SCHEDULES WIDGET */
         .schedule-widget {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -267,9 +331,7 @@
             gap: 15px;
         }
         @media (max-width: 600px) {
-            .schedule-grid {
-                grid-template-columns: 1fr;
-            }
+            .schedule-grid { grid-template-columns: 1fr; }
         }
         .schedule-column {
             background-color: #1e1e1e;
@@ -294,25 +356,10 @@
             padding: 6px 0;
             border-bottom: 1px solid #222;
         }
-        .schedule-row:last-child {
-            border-bottom: none;
-        }
-        .prayer-label {
-            color: #a0a0a0;
-            font-weight: 500;
-        }
-        .name-value {
-            color: #ffffff;
-            font-weight: bold;
-            text-align: right;
-        }
-        .disclaimer-text {
-            font-size: 0.8em;
-            color: #a0a0a0;
-            text-align: center;
-            margin-top: 5px;
-            font-style: italic;
-        }
+        .schedule-row:last-child { border-bottom: none; }
+        .prayer-label { color: #a0a0a0; font-weight: 500; }
+        .name-value { color: #ffffff; font-weight: bold; text-align: right; }
+        .disclaimer-text { font-size: 0.8em; color: #a0a0a0; text-align: center; margin-top: 5px; font-style: italic; }
 
         /* SOCIAL MEDIA WIDGET */
         .social-widget {
@@ -345,10 +392,7 @@
             transition: transform 0.2s, opacity 0.2s;
             display: inline-block;
         }
-        .social-link:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
+        .social-link:hover { transform: translateY(-2px); opacity: 0.9; }
         .yt-color { background-color: #ff0000; }
         .x-color { background-color: #000000; border: 1px solid #444; }
         .tg-color { background-color: #0088cc; }
@@ -370,22 +414,9 @@
             animation: slideIn .4s ease;
             box-sizing: border-box;
         }
-        .azan-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(0,0,0,0.15);
-            padding-bottom: 5px;
-        }
-        .azan-body {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .azan-footer {
-            margin-top: 12px;
-            font-size: 12px;
-            opacity: .8;
-        }
+        .azan-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.15); padding-bottom: 5px; }
+        .azan-body { font-size: 14px; line-height: 1.5; }
+        .azan-footer { margin-top: 12px; font-size: 12px; opacity: .8; }
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -437,8 +468,21 @@
             </div>
         </div>
 
-        <!-- VIDEO PLAYER -->
+        <!-- VIDEO PLAYER WITH IN-STREAM EPG OVERLAY -->
         <div class="video-holder">
+            <div id="epgOverlay" class="stream-epg-overlay">
+                <div class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
+                <div id="epgTitle" class="stream-epg-title">Holy Quran Recitation</div>
+                <div id="epgDesc" class="stream-epg-desc">Beautiful and melodious recitations of the Holy Quran broadcasted live from Makkah.</div>
+                <div class="stream-epg-time">
+                    <span id="epgRange">00:00 - 00:00</span>
+                    <span id="epgLeft" style="color: #d4af37;">0 min left</span>
+                </div>
+                <div class="stream-epg-progress-bg">
+                    <div id="epgProgress" class="stream-epg-progress-bar"></div>
+                </div>
+            </div>
+
             <video id="tasjeelat-player" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto" crossorigin="anonymous" data-setup='{}'>
                 <p class="vjs-no-js">Please enable JavaScript to view this video.</p>
             </video>
@@ -456,23 +500,20 @@
 
         <!-- HORIZONTAL PLAYLIST -->
         <div class="playlist-horizontal">
-            <!-- Saudiya TV -->
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn active" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD')">Saudiya SD</button>
+                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD')">Saudiya SD</button>
                 </div>
             </div>
 
-            <!-- Al-Quran Al-Kareem TV -->
             <div class="category-group">
                 <div class="category-title">Al-Quran Al-Kareem TV</div>
                 <div class="sub-buttons">
-                    <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD')">Quran Makkah SD</button>
+                    <button class="stream-btn active" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this, 'QuranKSA_SD')">Quran Makkah SD</button>
                 </div>
             </div>
 
-            <!-- As-Sunnah An-Nabawiyyah TV -->
             <div class="category-group">
                 <div class="category-title">As-Sunnah An-Nabawiyyah TV</div>
                 <div class="sub-buttons">
@@ -481,16 +522,13 @@
             </div>
         </div>
 
-        <!-- HARAMAIN SCHEDULES WIDGET -->
+        <!-- SCHEDULES WIDGET -->
         <div class="schedule-widget">
             <div class="disclaimer-text" style="margin-bottom: 10px;">Names here may vary than the actual name.</div>
-            
             <div class="schedule-main-grid">
-                <!-- MAKKAH SCHEDULE BLOCK -->
                 <div class="schedule-block">
                     <div class="block-title">Makkah Schedule (14 - 20 Dzulhijjah 1447H)</div>
                     <div class="schedule-grid">
-                        <!-- Imams -->
                         <div class="schedule-column">
                             <div class="column-header">Expected Imams</div>
                             <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Bandar Baleelah</span></div>
@@ -499,8 +537,6 @@
                             <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
                             <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Abdullah Juhany</span></div>
                         </div>
-                        
-                        <!-- Bilals -->
                         <div class="schedule-column">
                             <div class="column-header">Expected Bilals</div>
                             <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value" id="bilal-fajr">-</span></div>
@@ -512,7 +548,6 @@
                     </div>
                 </div>
 
-                <!-- MADINAH SCHEDULE BLOCK (DIAMBIL DARI image_106624.png) -->
                 <div class="schedule-block">
                     <div class="block-title">Madinah Schedule (14 - 20 Dzulhijjah 1447H)</div>
                     <div class="schedule-column" style="background-color: #1e1e1e;">
@@ -546,9 +581,7 @@
             <div id="azanCurrentPrayer">Current Waktu: <b>-</b></div>
             <div id="azanNextPrayer">Next: <b>-</b></div>
         </div>
-        <div class="azan-footer">
-            Let's prepare ourselves for prayer.
-        </div>
+        <div class="azan-footer">Let's prepare ourselves for prayer.</div>
     </div>
 
     <!-- Video.js Script -->
@@ -556,10 +589,11 @@
 
     <script>
         const player = videojs('tasjeelat-player');
-        let currentChannelName = "Saudiya_SD";
+        let currentChannelName = "QuranKSA_SD";
 
+        // Set default stream ke Quran Makkah
         player.src({
-            src: 'https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8',
+            src: 'https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8',
             type: 'application/x-mpegURL'
         });
 
@@ -584,7 +618,74 @@
                 infoBox.className = "static-info-container theme-mecca";
             }
             
+            // Sembunyikan atau tunjukkan EPG bergantung pada saluran
+            const overlay = document.getElementById('epgOverlay');
+            if (channelName === 'QuranKSA_SD') {
+                overlay.style.display = "block";
+            } else {
+                overlay.style.display = "none";
+            }
+
             updateClocksAndPrayers();
+            updateLiveEPG();
+        }
+
+        /* DATA JADUAL TELEVISYEN (ENGLISH) */
+        const quranTvSchedule = [
+            { start: "00:00", end: "02:00", title: "Holy Quran Recitation", desc: "Beautiful and melodious recitations of the Holy Quran broadcasted live from Masjid al-Haram, Makkah." },
+            { start: "02:00", end: "04:00", title: "Tahajjud & Quranic Recitation", desc: "Late night prayers and tranquil recitations filled with peace and spirituality before dawn." },
+            { start: "04:00", end: "06:00", title: "Fajr Prayer & Remembrance", desc: "Live broadcast of the Fajr prayer from Makkah, followed by morning Adhkar and supplications." },
+            { start: "06:00", end: "08:00", title: "Clear Verses (Quran Recitation)", desc: "Selected emotional and beautiful verses recited by well-known Imams of the Haramain." },
+            { start: "08:00", end: "10:00", title: "Holy Quran Recitation", desc: "Continuous broadcast of spiritual Quranic verses along with panoramic views of the Kaaba." },
+            { start: "10:00", end: "12:00", title: "Supplications & Remembrance", desc: "A collection of daily prophetic supplications, morning remembrance, and Quranic recitations." },
+            { start: "12:00", end: "14:00", title: "Dhuhr Prayer & Live Broadcast", desc: "Live coverage of the Dhuhr prayer and the beautiful midday atmosphere inside Masjid al-Haram." },
+            { start: "14:00", end: "16:00", title: "Holy Quran Recitation", desc: "Beautiful and melodious recitations of the Holy Quran broadcasted around the clock." },
+            { start: "16:00", end: "18:00", title: "Asr Prayer & Quran Recitation", desc: "Live broadcast of the Asr obligatory prayer from Makkah, accompanied by continuous spiritual recitation." },
+            { start: "18:00", end: "20:00", title: "Maghrib Prayer & Supplications", desc: "Live broadcast of the sunset (Maghrib) prayer and evening Adhkar from the heart of Makkah." },
+            { start: "20:00", end: "22:00", title: "Isha Prayer & Remembrance", desc: "Live broadcast of the Isha night prayer from Masjid al-Haram, followed by evening spiritual recitations." },
+            { start: "22:00", end: "24:00", title: "Holy Quran Recitation", desc: "Late night continuous broadcast of blessed Quranic recitations to accompany your night." }
+        ];
+
+        /* LOGIK UPDATE OVERLAY EPG MENGIKUT MASA MEKAH */
+        function updateLiveEPG() {
+            if (currentChannelName !== 'QuranKSA_SD') return;
+
+            const now = new Date();
+            
+            // Paksa sistem mengira jam & minit mengikut Zon Waktu Arab Saudi (Asia/Riyadh)
+            const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
+            const [makkahHours, makkahMinutes] = makkahTimeString.split(':').map(Number);
+            const makkahTotalMinutes = makkahHours * 60 + makkahMinutes;
+
+            let activeProg = null;
+
+            for (let prog of quranTvSchedule) {
+                const [startH, startM] = prog.start.split(':').map(Number);
+                let [endH, endM] = prog.end.split(':').map(Number);
+                
+                if (endH === 24) { endH = 23; endM = 59; }
+
+                const startTotalMinutes = startH * 60 + startM;
+                const endTotalMinutes = endH * 60 + endM;
+
+                if (makkahTotalMinutes >= startTotalMinutes && makkahTotalMinutes <= endTotalMinutes) {
+                    activeProg = { ...prog, startMin: startTotalMinutes, endMin: endTotalMinutes };
+                    break;
+                }
+            }
+
+            if (activeProg) {
+                const totalDuration = activeProg.endMin - activeProg.startMin;
+                const elapsed = makkahTotalMinutes - activeProg.startMin;
+                const progressPercent = (elapsed / totalDuration) * 100;
+                const minutesLeft = activeProg.endMin - makkahTotalMinutes;
+
+                document.getElementById('epgTitle').textContent = activeProg.title;
+                document.getElementById('epgDesc').textContent = activeProg.desc;
+                document.getElementById('epgRange').textContent = `${activeProg.start} - ${activeProg.end}`;
+                document.getElementById('epgLeft').textContent = `${minutesLeft === 0 ? 1 : minutesLeft} min left`;
+                document.getElementById('epgProgress').style.width = `${progressPercent}%`;
+            }
         }
 
         /* DATA BILAL HARIAN MAKKAH */
@@ -598,7 +699,7 @@
             6: { Fajr: "Syeikh Naif Fiedeh", Dhuhr: "Syeikh Turki Al-Hassani", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" }
         };
 
-        /* MAKKAH PRAYER TIME SCHEDULE */
+        /* JADUAL WAKTU SOLAT MAKKAH */
         const prayerSchedule = {
             2:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:35", Maghrib: "19:00", Isha: "20:30" },
             3:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:36", Maghrib: "19:00", Isha: "20:30" },
@@ -632,7 +733,7 @@
             1:  { Fajr: "04:14", Sunrise: "05:42", Dhuhr: "12:25", Asr: "15:43", Maghrib: "19:07", Isha: "20:37" }
         };
 
-        /* MADINAH PRAYER TIME SCHEDULE */
+        /* JADUAL WAKTU SOLAT MADINAH */
         const madinahSchedule = {
             2:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
             3:  { Fajr: "04:03", Sunrise: "05:33", Dhuhr: "12:20", Asr: "15:41", Maghrib: "19:07", Isha: "20:37" },
@@ -674,39 +775,24 @@
             const maghribMin = timeToMinutes(schedule.Maghrib);
             const isyaMin = timeToMinutes(schedule.Isha);
 
-            let current = "";
-            let next = "";
-            let nextTime = "";
+            let current = ""; let next = ""; let nextTime = "";
 
             if (currentMinutes >= isyaMin) {
-                current = "Isha";
-                next = "Fajr (Tomorrow)";
+                current = "Isha"; next = "Fajr (Tomorrow)";
                 const tomorrowSchedule = fullSchedule[dayNum + 1] || fullSchedule[1];
                 nextTime = tomorrowSchedule.Fajr;
             } else if (currentMinutes >= maghribMin) {
-                current = "Maghrib";
-                next = "Isha";
-                nextTime = schedule.Isha;
+                current = "Maghrib"; next = "Isha"; nextTime = schedule.Isha;
             } else if (currentMinutes >= asrMin) {
-                current = "Asr";
-                next = "Maghrib";
-                nextTime = schedule.Maghrib;
+                current = "Asr"; next = "Maghrib"; nextTime = schedule.Maghrib;
             } else if (currentMinutes >= dhuhrMin) {
-                current = "Dhuhr";
-                next = "Asr";
-                nextTime = schedule.Asr;
+                current = "Dhuhr"; next = "Asr"; nextTime = schedule.Asr;
             } else if (currentMinutes >= sunriseMin) {
-                current = "Sunrise";
-                next = "Dhuhr";
-                nextTime = schedule.Dhuhr;
+                current = "Sunrise"; next = "Dhuhr"; nextTime = schedule.Dhuhr;
             } else if (currentMinutes >= fajrMin) {
-                current = "Fajr";
-                next = "Sunrise";
-                nextTime = schedule.Sunrise;
+                current = "Fajr"; next = "Sunrise"; nextTime = schedule.Sunrise;
             } else {
-                current = "Isha (Last Night)";
-                next = "Fajr";
-                nextTime = schedule.Fajr;
+                current = "Isha (Last Night)"; next = "Fajr"; nextTime = schedule.Fajr;
             }
             return { current, next, nextTime };
         }
@@ -719,7 +805,7 @@
         function updateClocksAndPrayers() {
             const now = new Date();
 
-            // 1. System Time
+            // 1. System Time (Local Browser)
             document.getElementById('systemTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
 
             // 2. Saudi Arabia Time & Date
@@ -738,7 +824,7 @@
 
             const currentMakkahMinutes = timeToMinutes(makkahTimeString.substring(0, 5));
 
-            // 3. Process Mecca Prayer Data
+            // 3. Process Mecca Prayer Info
             const meccaToday = prayerSchedule[makkahDay];
             if (meccaToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
                 const meccaStatus = getPrayerStatus(currentMakkahMinutes, meccaToday, makkahDay, prayerSchedule);
@@ -749,7 +835,7 @@
                 document.getElementById('nextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            // 4. Process Madinah Prayer Data
+            // 4. Process Madinah Prayer Info
             const madinahToday = madinahSchedule[makkahDay];
             if (madinahToday && (makkahMonthNumeric === 6 || makkahMonthNumeric === 7)) {
                 const madinahStatus = getPrayerStatus(currentMakkahMinutes, madinahToday, makkahDay, madinahSchedule);
@@ -760,19 +846,8 @@
                 document.getElementById('madinahNextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            // 5. Update Bilal Dynamic Widget Data
-            updateBilalWidget(saudiDayIndex);
-
-            // 6. Update Dynamic Info Box Text
-            updateDynamicBoxText(meccaToday, madinahToday);
-
-            // 7. Monitor Change for Adhan Popup
-            monitorPrayerChange();
-        }
-
-        /* DYNAMIC BILAL REFRESH LOGIC */
-        function updateBilalWidget(dayIndex) {
-            const todayBilal = bilalWeeklySchedule[dayIndex];
+            // 5. Update Bilal Dynamic Grid Data
+            const todayBilal = bilalWeeklySchedule[saudiDayIndex];
             if (todayBilal) {
                 document.getElementById('bilal-fajr').innerText = todayBilal.Fajr;
                 document.getElementById('bilal-dhuhr').innerText = todayBilal.Dhuhr;
@@ -780,11 +855,9 @@
                 document.getElementById('bilal-maghrib').innerText = todayBilal.Maghrib;
                 document.getElementById('bilal-isha').innerText = todayBilal.Isha;
             }
-        }
 
-        function updateDynamicBoxText(meccaToday, madinahToday) {
+            // 6. Update Dynamic Info Box Text
             const infoTextElement = document.getElementById('dynamicInfoText');
-            
             if (currentChannelName === 'SunnahKSA_SD') {
                 if (madinahToday) {
                     infoTextElement.innerText = `Madinah Prayer Time for today: Fajr: ${madinahToday.Fajr} | Sunrise: ${madinahToday.Sunrise} | Dhuhr: ${madinahToday.Dhuhr} | Asr: ${madinahToday.Asr} | Maghrib: ${madinahToday.Maghrib} | Isha: ${madinahToday.Isha}`;
@@ -798,42 +871,30 @@
                     infoTextElement.innerText = "Mecca Prayer Time for today: No Data Available";
                 }
             }
+
+            // 7. Monitor Change for Adhan Popup
+            monitorPrayerChange();
+            
+            // 8. Auto Refresh In-Stream EPG Data (Waktu Makkah)
+            updateLiveEPG();
         }
 
-        setInterval(updateClocksAndPrayers, 1000);
-        window.onload = updateClocksAndPrayers;
-
         /* VIDEO RECORDING LOGIC */
-        let mediaRecorder;
-        let recordedChunks = [];
-        let isRecording = false;
-        let startTime;
-        let timerInterval;
+        let mediaRecorder; let recordedChunks = []; let isRecording = false; let startTime; let timerInterval;
 
         function toggleRecording() {
             const videoElement = document.querySelector('#tasjeelat-player_html5_api');
             const recordBtn = document.getElementById('recordBtn');
             const recordStatus = document.getElementById('recordStatus');
 
-            if (!videoElement) {
-                alert("Video player is not ready.");
-                return;
-            }
+            if (!videoElement) { alert("Video player is not ready."); return; }
 
             if (!isRecording) {
-                recordedChunks = [];
-                let stream;
-                try {
-                    stream = videoElement.captureStream ? videoElement.captureStream() : videoElement.mozCaptureStream();
-                } catch (e) {
-                    alert("Recording error (CORS issue).");
-                    return;
-                }
+                recordedChunks = []; let stream;
+                try { stream = videoElement.captureStream ? videoElement.captureStream() : videoElement.mozCaptureStream(); } catch (e) { alert("Recording error (CORS issue)."); return; }
 
                 let options = { mimeType: 'video/webm;codecs=vp9,opus' };
-                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                    options = { mimeType: 'video/webm;codecs=vp8,opus' };
-                }
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) { options = { mimeType: 'video/webm;codecs=vp8,opus' }; }
 
                 try { mediaRecorder = new MediaRecorder(stream, options); } catch (e) { mediaRecorder = new MediaRecorder(stream); }
 
@@ -842,53 +903,31 @@
                     const blob = new Blob(recordedChunks, { type: 'video/webm' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
+                    a.style.display = 'none'; a.href = url;
                     a.download = `Tasjeelat_${currentChannelName}_${new Date().toISOString().slice(0,10)}.webm`;
-                    document.body.appendChild(a);
-                    a.click();
+                    document.body.appendChild(a); a.click();
                     setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
                 };
 
-                mediaRecorder.start(1000);
-                isRecording = true;
-                recordBtn.innerHTML = "Stop Recording";
-                recordBtn.classList.add('recording');
-                recordStatus.style.display = 'flex';
-                startTime = Date.now();
-                timerInterval = setInterval(updateTimer, 1000);
+                mediaRecorder.start(1000); isRecording = true;
+                recordBtn.innerHTML = "Stop Recording"; recordBtn.classList.add('recording');
+                recordStatus.style.display = 'flex'; startTime = Date.now();
+                timerInterval = setInterval(() => {
+                    const elapsedTime = Date.now() - startTime;
+                    const totalSeconds = Math.floor(elapsedTime / 1000);
+                    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+                    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+                    document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+                }, 1000);
             } else {
-                mediaRecorder.stop();
-                isRecording = false;
-                recordBtn.innerHTML = "<span class='dot'></span> Start Recording";
-                recordBtn.classList.remove('recording');
-                recordStatus.style.display = 'none';
-                clearInterval(timerInterval);
+                mediaRecorder.stop(); isRecording = false;
+                recordBtn.innerHTML = "<span class='dot'></span> Start Recording"; recordBtn.classList.remove('recording');
+                recordStatus.style.display = 'none'; clearInterval(timerInterval);
             }
-        }
-
-        function updateTimer() {
-            const elapsedTime = Date.now() - startTime;
-            const totalSeconds = Math.floor(elapsedTime / 1000);
-            const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-            const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-            document.getElementById('timer').innerText = `${minutes}:${seconds}`;
         }
 
         /* ADHAN ALERT SYSTEM */
         let lastDisplayedPrayer = localStorage.getItem("lastPrayer") || "";
-
-        function showAzanPopup(currentPrayer, nextPrayerText) {
-            document.getElementById("azanCurrentPrayer").innerHTML = "Current Waktu: <b>" + currentPrayer + "</b>";
-            document.getElementById("azanNextPrayer").innerHTML = "Next: <b>" + nextPrayerText + "</b>";
-
-            const popup = document.getElementById("azanPopup");
-            popup.style.display = "block";
-
-            setTimeout(() => {
-                popup.style.display = "none";
-            }, 15000);
-        }
 
         function monitorPrayerChange() {
             let currentElem, nextElem;
@@ -907,13 +946,23 @@
 
             if (currentPrayer && currentPrayer !== "-" && currentPrayer !== "No Data" && currentPrayer !== lastDisplayedPrayer) {
                 if (lastDisplayedPrayer !== "") {
-                    showAzanPopup(currentPrayer, nextPrayerText);
+                    document.getElementById("azanCurrentPrayer").innerHTML = "Current Waktu: <b>" + currentPrayer + "</b>";
+                    document.getElementById("azanNextPrayer").innerHTML = "Next: <b>" + nextPrayerText + "</b>";
+                    const popup = document.getElementById("azanPopup");
+                    popup.style.display = "block";
+                    setTimeout(() => { popup.style.display = "none"; }, 15000);
                 }
-                
                 lastDisplayedPrayer = currentPrayer;
                 localStorage.setItem("lastPrayer", currentPrayer);
             }
         }
+
+        // Jalankan kit jam setiap 1 saat
+        setInterval(updateClocksAndPrayers, 1000);
+        window.onload = () => {
+            updateClocksAndPrayers();
+            updateLiveEPG();
+        };
     </script>
 </body>
 </html>
