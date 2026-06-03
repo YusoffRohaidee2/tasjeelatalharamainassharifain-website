@@ -92,7 +92,6 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-        /* Tema Warna Mekah (Merah) */
         .theme-mecca {
             background-color: #1a0000;
             border: 1px solid #cc0000;
@@ -100,7 +99,6 @@
         .theme-mecca .static-info-text {
             color: #ff4444;
         }
-        /* Tema Warna Madinah (Hijau/Emas) */
         .theme-madinah {
             background-color: #001a05;
             border: 1px solid #00aa22;
@@ -233,6 +231,69 @@
             border-color: #fff;
         }
 
+        /* EXPECTED IMAMS & BILALS WIDGET */
+        .schedule-widget {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .schedule-column {
+            background-color: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        .column-header {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #d4af37;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            padding: 6px 0;
+            border-bottom: 1px solid #222;
+        }
+        .schedule-row:last-child {
+            border-bottom: none;
+        }
+        .prayer-label {
+            color: #a0a0a0;
+            font-weight: 500;
+        }
+        .name-value {
+            color: #ffffff;
+            font-weight: bold;
+            text-align: right;
+        }
+        .disclaimer-text {
+            font-size: 0.8em;
+            color: #a0a0a0;
+            text-align: center;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
         /* SOCIAL MEDIA WIDGET */
         .social-widget {
             background-color: #1e1e1e;
@@ -281,7 +342,7 @@
     <div class="container">
         <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
-            <!-- DUAL CLOCK CARD (UPDATED LABELS TO SAUDI ARABIA UTC+3) -->
+            <!-- DUAL CLOCK CARD -->
             <div class="widget-card" style="flex: 1.2; min-width: 280px;">
                 <div class="widget-title">🕒 Dual Clock & Date</div>
                 <div style="display: flex; justify-content: space-between;">
@@ -312,7 +373,7 @@
             </div>
         </div>
 
-        <!-- STATIC INFO BOX (THEME CHANGED VIA JS BASED ON CHANNEL) -->
+        <!-- STATIC INFO BOX -->
         <div class="static-info-container theme-mecca" id="dynamicInfoBox">
             <div class="static-info-text" id="dynamicInfoText">
                 Loading prayer times information...
@@ -363,6 +424,33 @@
             </div>
         </div>
 
+        <!-- SCHEDULE WIDGET (MECCA & MADINAH SPLIT) -->
+        <div class="schedule-widget">
+            <div class="widget-title">🕌 Haramain Schedule (14 - 20 Dzulhijjah 1447H)</div>
+            <div class="disclaimer-text">Names here may vary than the actual name.</div>
+            <div class="schedule-grid">
+                <!-- Madinah Imams Column (Fixed Weekly Schedule - image_13161b.jpg) -->
+                <div class="schedule-column">
+                    <div class="column-header">Madinah Expected Imams</div>
+                    <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Abdul Bari Al-Thubaity</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Muhammad Al-Burhaji</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Khalid Al-Muhanna</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Saleh Al-Maghamsi</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Abdullah Al-Qarafi</span></div>
+                </div>
+                
+                <!-- Mecca Bilals Column (Dynamic Day-by-Day Schedule) -->
+                <div class="schedule-column">
+                    <div class="column-header">Mecca Expected Bilals</div>
+                    <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value" id="bilal-fajr">-</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value" id="bilal-dhuhr">-</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value" id="bilal-asr">-</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value" id="bilal-maghrib">-</span></div>
+                    <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value" id="bilal-isha">-</span></div>
+                </div>
+            </div>
+        </div>
+
         <!-- SOCIAL MEDIA WIDGET -->
         <div class="social-widget">
             <div class="widget-title">📢 Follow Our Social Media</div>
@@ -387,7 +475,6 @@
             type: 'application/x-mpegURL'
         });
 
-        // ACTION WHEN CHANGING STREAM
         function changeStream(url, buttonElement, channelName) {
             if (isRecording) {
                 alert("Please stop recording before switching channels!");
@@ -402,7 +489,6 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
 
-            // Instantly update layout look based on selected channel
             const infoBox = document.getElementById('dynamicInfoBox');
             if (channelName === 'SunnahKSA_SD') {
                 infoBox.className = "static-info-container theme-madinah";
@@ -410,9 +496,19 @@
                 infoBox.className = "static-info-container theme-mecca";
             }
             
-            // Force text update immediately
             updateClocksAndPrayers();
         }
+
+        /* DATA BILAL HARIAN MAKKAH */
+        const bilalWeeklySchedule = {
+            0: { Fajr: "Syeikh Ahmad Khojah", Dhuhr: "Syeikh Dr. Essam Khan", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Dr. Essam Khan", Isha: "Syeikh Ali Mulla" },
+            1: { Fajr: "Syeikh Suhail Hafiz", Dhuhr: "Syeikh Abdullah Ba'afeef", Asr: "Syeikh Suhail Hafiz", Maghrib: "Syeikh Abdullah Ba'afeef", Isha: "Syeikh Hamad Dagriri" },
+            2: { Fajr: "Syeikh Tawfiq Khoj", Dhuhr: "Syeikh Suhail Hafiz", Asr: "Syeikh Ahmad Khojah", Maghrib: "Syeikh Muhammad Basad", Isha: "Syeikh Hussain Shahat" },
+            3: { Fajr: "Syeikh Turki Al-Hassani", Dhuhr: "Syeikh Abdullah Ba'afeef", Asr: "Syeikh Dr. Majid Abbas", Maghrib: "Syeikh Hashem Saqqaf", Isha: "Syeikh Said Flathe" },
+            4: { Fajr: "Syeikh Hashem Saqqaf", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Naif Fiedeh", Maghrib: "Syeikh Emad Baqri", Isha: "Syeikh Ali Mulla" },
+            5: { Fajr: "Syeikh Abdullah Ba'afeef", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Ahmad Nahas", Isha: "Syeikh Sami Rayes" },
+            6: { Fajr: "Syeikh Naif Fiedeh", Dhuhr: "Syeikh Turki Al-Hassani", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" }
+        };
 
         /* MAKKAH PRAYER TIME SCHEDULE */
         const prayerSchedule = {
@@ -436,7 +532,7 @@
             19: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:05", Isha: "20:35" },
             20: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:05", Isha: "20:35" },
             21: { Fajr: "04:11", Sunrise: "05:39", Dhuhr: "12:22", Asr: "15:42", Maghrib: "19:06", Isha: "20:36" },
-            22: { Fajr: "04:11", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
+            22: { Fajr: "04:11", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:44", Maghrib: "19:06", Isha: "20:36" },
             23: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
             24: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
             25: { Fajr: "04:12", Sunrise: "05:40", Dhuhr: "12:23", Asr: "15:43", Maghrib: "19:06", Isha: "20:36" },
@@ -482,7 +578,6 @@
             1:  { Fajr: "04:05", Sunrise: "05:37", Dhuhr: "12:25", Asr: "15:46", Maghrib: "19:14", Isha: "20:44" }
         };
 
-        /* HELPER FOR CALCULATING PRAYER STATUS */
         function getPrayerStatus(currentMinutes, schedule, dayNum, fullSchedule) {
             const fajrMin = timeToMinutes(schedule.Fajr);
             const sunriseMin = timeToMinutes(schedule.Sunrise);
@@ -533,14 +628,13 @@
             return h * 60 + m;
         };
 
-        /* MAIN CLOCK & PRAYER TIMERS SYSTEM */
         function updateClocksAndPrayers() {
             const now = new Date();
 
             // 1. System Time
             document.getElementById('systemTime').innerText = now.toLocaleTimeString('en-US', { hour12: false });
 
-            // 2. Saudi Arabia Time & Date (Updated Labels)
+            // 2. Saudi Arabia Time & Date
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
             document.getElementById('makkahTime').innerText = makkahTimeString;
 
@@ -549,6 +643,10 @@
             
             const makkahDay = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric' }));
             const makkahMonthNumeric = parseInt(now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', month: 'numeric' }));
+
+            const saudiDayOfWeekStr = now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', weekday: 'long' });
+            const dayMap = { "Sunday": 0, "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6 };
+            const saudiDayIndex = dayMap[saudiDayOfWeekStr];
 
             const currentMakkahMinutes = timeToMinutes(makkahTimeString.substring(0, 5));
 
@@ -574,11 +672,25 @@
                 document.getElementById('madinahNextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
-            // 5. Update Dynamic Info Box Text based on current active channel
+            // 5. Update Bilal Dynamic Widget Data
+            updateBilalWidget(saudiDayIndex);
+
+            // 6. Update Dynamic Info Box Text
             updateDynamicBoxText(meccaToday, madinahToday);
         }
 
-        /* DYNAMIC BOX TEXT UPDATE LOGIC */
+        /* DYNAMIC BILAL REFRESH LOGIC */
+        function updateBilalWidget(dayIndex) {
+            const todayBilal = bilalWeeklySchedule[dayIndex];
+            if (todayBilal) {
+                document.getElementById('bilal-fajr').innerText = todayBilal.Fajr;
+                document.getElementById('bilal-dhuhr').innerText = todayBilal.Dhuhr;
+                document.getElementById('bilal-asr').innerText = todayBilal.Asr;
+                document.getElementById('bilal-maghrib').innerText = todayBilal.Maghrib;
+                document.getElementById('bilal-isha').innerText = todayBilal.Isha;
+            }
+        }
+
         function updateDynamicBoxText(meccaToday, madinahToday) {
             const infoTextElement = document.getElementById('dynamicInfoText');
             
