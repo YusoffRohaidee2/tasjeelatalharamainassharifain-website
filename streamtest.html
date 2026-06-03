@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic IPTV Player Simple</title>
+    <!-- Guna library HLS.js supaya browser biasa boleh mainkan link .m3u8 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; padding: 20px; }
+        .container { max-width: 700px; margin: auto; }
+        video { width: 100%; max-width: 640px; background: black; border-radius: 8px; margin-bottom: 10px; }
+        .controls { margin-bottom: 20px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; border: none; background: #00adb5; color: white; }
+        button:hover { background: #007a80; }
+        input[type="text"] { width: 80%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #333; background: #222; color: white; font-size: 16px; }
+        .channel-list { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; background: #1a1a1a; border-radius: 5px; }
+        .channel-item { padding: 12px; cursor: pointer; border-bottom: 1px solid #333; text-align: left; }
+        .channel-item:hover { background: #333; }
+        .active { background: #00adb5 !important; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Islamic Live Stream Player</h2>
+    
+    <!-- Player Video -->
+    <video id="video" controls autoplay></video>
+    
+    <!-- Butang Play/Pause Mudah -->
+    <div class="controls">
+        <button id="playPauseBtn" onclick="togglePlay()">Pause</button>
+    </div>
+
+    <!-- Kotak Carian Channel -->
+    <input type="text" id="searchBox" onkeyup="filterChannels()" placeholder="Cari saluran... (cth: Quran, Sunnah)">
+
+    <!-- Senarai Saluran -->
+    <ul class="channel-list" id="channelList">
+        <!-- Saluran dari senarai kau dimasukkan di sini -->
+        <li class="channel-item active" onclick="changeChannel('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', this)">Al-Quran Al-Kareem TV (Server 1)</li>
+        <li class="channel-item" onclick="changeChannel('https://win.holol.com/live/quran/playlist.m3u8', this)">Al-Quran Al-Kareem TV (Server 3)</li>
+        <li class="channel-item" onclick="changeChannel('https://win.holol.com/live/quran/chunklist_w235124402.m3u8', this)">Al-Quran Al-Kareem TV (Server 4)</li>
+        <li class="channel-item" onclick="changeChannel('https://media2.streambrothers.com:1936/8122/8122/playlist.m3u8', this)">Makkah TV (Alternative)</li>
+        <li class="channel-item" onclick="changeChannel('https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8', this)">As-Sunnah An-Nabawiyyah TV (Server 1)</li>
+        <li class="channel-item" onclick="changeChannel('https://win.holol.com/live/sunnah/playlist.m3u8', this)">As-Sunnah An-Nabawiyyah TV (Server 3)</li>
+        <li class="channel-item" onclick="changeChannel('https://win.holol.com/live/sunnah/chunklist_w940022134.m3u8', this)">As-Sunnah An-Nabawiyyah (Server 4)</li>
+        <li class="channel-item" onclick="changeChannel('https://dtfe3weh30eb8.cloudfront.net/live11/islamtv_english/bitrate1.isml/live.m3u8', this)">Islam Channel English</li>
+        <li class="channel-item" onclick="changeChannel('https://5c7b683162943.streamlock.net/live/ngrp:bahrainquran_all/playlist.m3u8', this)">Bahrain Quran</li>
+        <li class="channel-item" onclick="changeChannel('https://live.kwikmotion.com/sbrksaquranradiolive/srpksaquranradio/playlist.m3u8', this)">Holy Quran Radio (Saudi)</li>
+        <li class="channel-item" onclick="changeChannel('https://live.kwikmotion.com/sbrksanedaradiolive/srpksanedaradio/playlist.m3u8', this)">Nidae Al-Islam Radio</li>
+    </ul>
+</div>
+
+<script>
+    var video = document.getElementById('video');
+    var playPauseBtn = document.getElementById('playPauseBtn');
+    var hls = new HLS();
+
+    // Fungsi Tukar Channel
+    function changeChannel(url, element) {
+        if (Hls.isSupported()) {
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+                playPauseBtn.innerText = "Pause";
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = url;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+                playPauseBtn.innerText = "Pause";
+            });
+        }
+
+        // Tukar style tulisan aktif
+        var items = document.querySelectorAll('.channel-item');
+        items.forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    // Fungsi Play/Pause
+    function togglePlay() {
+        if (video.paused) {
+            video.play();
+            playPauseBtn.innerText = "Pause";
+        } else {
+            video.pause();
+            playPauseBtn.innerText = "Play";
+        }
+    }
+
+    // Fungsi Carian (Search Filter)
+    function filterChannels() {
+        var input = document.getElementById('searchBox').value.toLowerCase();
+        var ul = document.getElementById('channelList');
+        var li = ul.getElementsByTagName('li');
+
+        for (var i = 0; i < li.length; i++) {
+            var txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toLowerCase().indexOf(input) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+    // Pasang channel pertama secara automatik masa buka page
+    window.onload = function() {
+        changeChannel('https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8', document.querySelector('.channel-item'));
+    };
+</script>
+
+</body>
+</html>
