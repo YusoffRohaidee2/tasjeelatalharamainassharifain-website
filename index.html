@@ -125,8 +125,7 @@
             position: relative;
         }
         
-        /* Hanya tunjuk overlay kalau tiada class .hide-overlay */
-        .video-holder:not(.hide-overlay):hover .stream-epg-overlay {
+        .video-holder:hover .stream-epg-overlay {
             opacity: 1;
             pointer-events: auto;
         }
@@ -466,8 +465,7 @@
         </div>
 
         <!-- VIDEO PLAYER -->
-        <!-- Default load guna QuranKSA_HD1, jadi overlay aktif pada permulaan -->
-        <div class="video-holder" id="videoHolder">
+        <div class="video-holder">
             <div id="epgOverlay" class="stream-epg-overlay">
                 <div id="epgHeader" class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
                 <div id="epgTitle" class="stream-epg-title">Holy Quran Recitation</div>
@@ -501,8 +499,6 @@
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
                 <div class="sub-buttons">
-                    <!-- ADDED SAUDIYA HD BELOW -->
-                    <button class="stream-btn" onclick="changeStream('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-saudi-tv/2ad66056b51fd8c1b624854623112e43/index.m3u8', this, 'Saudiya_HD', 'mecca')">Saudiya HD</button>
                     <button class="stream-btn" onclick="changeStream('https://cdn-globecast.akamaized.net/live/eds/saudi_tv/hls_roku/index.m3u8', this, 'Saudiya_SD', 'mecca')">Saudiya SD</button>
                 </div>
             </div>
@@ -527,6 +523,48 @@
         <!-- SCHEDULES WIDGET -->
         <div class="schedule-widget">
             <div class="disclaimer-text" style="margin-bottom: 10px;">Names here may vary than the actual name.</div>
+            
+            <!-- WEEKLY FRIDAY SERMON INFO SECTION -->
+            <div class="schedule-block" style="border: 2px solid #d4af37; margin-bottom: 20px; background-color: #1a1a1a;">
+                <div class="block-title" style="color: #d4af37; text-align: center; font-size: 1.1em;">📢 FRIDAY SERMON INFO FOR THIS WEEK (5 JUN 2026 / 19 DZULHIJJAH 1447H)</div>
+                <div class="schedule-grid">
+                    <!-- Makkah Sermon -->
+                    <div class="schedule-column" style="border-left: 3px solid #cc0000;">
+                        <div class="column-header" style="color: #ff4444;">🕋 MASJIDIL HARAM, MAKKAH</div>
+                        <div class="schedule-row">
+                            <span class="prayer-label">Main Khatib</span>
+                            <span class="name-value" style="color: #d4af37;">Syeikh Dr. Yasser Al-Dousari</span>
+                        </div>
+                        <div class="schedule-row">
+                            <span class="prayer-label">Substitute</span>
+                            <span class="name-value">Syeikh Dr. Abdullah Al-Juhany</span>
+                        </div>
+                    </div>
+                    <!-- Madinah Sermon -->
+                    <div class="schedule-column" style="border-left: 3px solid #00aa22;">
+                        <div class="column-header" style="color: #22ff55;">🕌 MASJID NABAWI, MADINAH</div>
+                        <div class="schedule-row">
+                            <span class="prayer-label">Main Khatib</span>
+                            <span class="name-value" style="color: #d4af37;">Syeikh Dr. Salah Al-Budayr</span>
+                        </div>
+                        <div class="schedule-row">
+                            <span class="prayer-label">Substitute</span>
+                            <span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Live Translation & Website Note Links -->
+                <div style="margin-top: 15px; text-align: center; background: #252525; padding: 12px; border-radius: 5px; line-height: 1.6;">
+                    <div>
+                        <span style="font-size: 0.9em; color: #eee;">🌍 Live Translation in Multiple Languages: </span>
+                        <a href="https://www.youtube.com/@Al-haramain-Sermons/featured" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: underline; margin-left: 5px;">Al-Haramain Sermons (YouTube)</a>
+                    </div>
+                    <div style="font-size: 0.85em; color: #aaa; margin-top: 4px;">
+                        Or see it live on our website.
+                    </div>
+                </div>
+            </div>
+
             <div class="schedule-main-grid">
                 <div class="schedule-block">
                     <div class="block-title">Makkah Schedule (14 - 20 Dzulhijjah 1447H)</div>
@@ -621,20 +659,24 @@
                 infoBox.className = "static-info-container theme-mecca";
             }
             
-            const videoHolder = document.getElementById('videoHolder');
+            const overlay = document.getElementById('epgOverlay');
+            const header = document.getElementById('epgHeader');
             
-            // EPG HANYA UNTUK SALURAN AL-QURAN AL-KAREEM TV (QuranKSA)
             if (channelName.startsWith('QuranKSA_')) {
-                videoHolder.classList.remove('hide-overlay'); // Benarkan hover overlay muncul
-                updateLiveEPG();
+                header.textContent = "Now Playing on Al-Quran Al-Kareem TV";
+                overlay.style.display = "block";
+            } else if (channelName.startsWith('SunnahKSA_')) {
+                header.textContent = "Now Playing on Al-Sunnah Al-Nabawiyah TV";
+                overlay.style.display = "block";
             } else {
-                videoHolder.classList.add('hide-overlay');    // Sekat terus hover overlay daripada muncul
+                overlay.style.display = "none";
             }
 
             updateClocksAndPrayers();
+            updateLiveEPG();
         }
 
-        /* DATA JADUAL TELEVISYEN HANYA UNTUK AL-QURAN AL-KAREEM TV */
+        /* TV PROGRAM SCHEDULE DATA */
         const quranTvSchedule = [
             { start: "00:00", end: "02:00", title: "Holy Quran Recitation", desc: "Beautiful and melodious recitations of the Holy Quran broadcasted live from Masjid al-Haram, Makkah." },
             { start: "02:00", end: "04:00", title: "Tahajjud & Quranic Recitation", desc: "Late night prayers and tranquil recitations filled with peace and spirituality before dawn." },
@@ -651,7 +693,7 @@
         ];
 
         function updateLiveEPG() {
-            if (!currentChannelName.startsWith('QuranKSA_')) return;
+            if (!currentChannelName.startsWith('QuranKSA_') && !currentChannelName.startsWith('SunnahKSA_')) return;
 
             const now = new Date();
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
@@ -689,7 +731,7 @@
             }
         }
 
-        /* DATA BILAL HARIAN MAKKAH */
+        /* DAILY MAKKAH BILAL DATA */
         const bilalWeeklySchedule = {
             0: { Fajr: "Syeikh Ahmad Khojah", Dhuhr: "Syeikh Dr. Essam Khan", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Dr. Essam Khan", Isha: "Syeikh Ali Mulla" },
             1: { Fajr: "Syeikh Suhail Hafiz", Dhuhr: "Syeikh Abdullah Ba'afeef", Asr: "Syeikh Suhail Hafiz", Maghrib: "Syeikh Abdullah Ba'afeef", Isha: "Syeikh Hamad Dagriri" },
@@ -700,7 +742,7 @@
             6: { Fajr: "Syeikh Naif Fiedeh", Dhuhr: "Syeikh Turki Al-Hassani", Asr: "Syeikh Muhammad Basad", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" }
         };
 
-        /* JADUAL WAKTU SOLAT MAKKAH & MADINAH */
+        /* PRAYER SCHEDULES (MAKKAH & MADINAH) */
         const prayerSchedule = {
             2:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:35", Maghrib: "19:00", Isha: "20:30" },
             3:  { Fajr: "04:11", Sunrise: "05:38", Dhuhr: "12:19", Asr: "15:36", Maghrib: "19:00", Isha: "20:30" },
