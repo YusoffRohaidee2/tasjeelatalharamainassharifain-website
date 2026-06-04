@@ -586,7 +586,7 @@
                 </div>
                 <div style="margin-top: 15px; text-align: center; background: #252525; padding: 12px; border-radius: 5px; line-height: 1.6;">
                     <div>
-                        <span style="font-size: 0.9em; color: #eee;">🎙️ Live Translation in Multiple Languages: </span>
+                        <span style="font-size: 0.9em; color: #eee;">🎧 Live Translation in Multiple Languages: </span>
                         <a href="https://www.youtube.com/@Al-haramain-Sermons/featured" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: underline; margin-left: 5px;">Al-Haramain Sermons (YouTube)</a>
                     </div>
                     <div style="font-size: 0.85em; color: #aaa; margin-top: 4px;">
@@ -689,11 +689,10 @@
             const overlay = document.getElementById('epgOverlay');
             const header = document.getElementById('epgHeader');
             
+            // KOD DIKEMAS KINI: Hanya membenarkan EPG keluar pada QuranKSA sahaja. 
+            // Blok SunnahKSA dibuang supaya 'display' ditukar ke 'none'.
             if (channelName.startsWith('QuranKSA_')) {
                 header.textContent = "Now Playing on Al-Quran Al-Kareem TV";
-                overlay.style.display = "block";
-            } else if (channelName.startsWith('SunnahKSA_')) {
-                header.textContent = "Now Playing on Al-Sunnah Al-Nabawiyah TV";
                 overlay.style.display = "block";
             } else {
                 overlay.style.display = "none";
@@ -873,7 +872,6 @@
 
         /* LOGIK PINTAR UNTUK MENGURUSKAN HIGHLIGHT WIDGET & 15 MINIT LIMIT */
         function handleWidgetHighlights(currentMakkahMinutes, makkahDay, makkahMonthNumeric) {
-            // Bersihkan semua class aktif lama terlebih dahulu
             const activeRows = document.querySelectorAll('.schedule-row.active-highlight');
             activeRows.forEach(row => row.classList.remove('active-highlight'));
 
@@ -884,11 +882,9 @@
 
             const prayerKeys = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
-            // Semak jadual Makkah (Imam & Bilal)
             if (meccaToday) {
                 prayerKeys.forEach(key => {
                     const prayerStartMinutes = timeToMinutes(meccaToday[key]);
-                    // Syarat: Waktu sekarang sudah masuk waktu solat DAN belum melebihi 15 minit
                     if (currentMakkahMinutes >= prayerStartMinutes && currentMakkahMinutes < (prayerStartMinutes + 15)) {
                         const imamRow = document.getElementById(`mecca-row-${key}`);
                         const bilalRow = document.getElementById(`mecca-bilal-row-${key}`);
@@ -898,7 +894,6 @@
                 });
             }
 
-            // Semak jadual Madinah (Imam)
             if (madinahToday) {
                 prayerKeys.forEach(key => {
                     const prayerStartMinutes = timeToMinutes(madinahToday[key]);
@@ -974,7 +969,6 @@
                 }
             }
 
-            // Jalankan fungsi pengurusan highlight setiap saat berdasarkan jam Arab Saudi semasa
             handleWidgetHighlights(currentMakkahMinutes, makkahDay, makkahMonthNumeric);
             monitorPrayerChange();
             updateLiveEPG();
