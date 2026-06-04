@@ -526,7 +526,7 @@
             
             <!-- WEEKLY FRIDAY SERMON INFO SECTION -->
             <div class="schedule-block" style="border: 2px solid #d4af37; margin-bottom: 20px; background-color: #1a1a1a;">
-                <div class="block-title" style="color: #d4af37; text-align: center; font-size: 1.1em;">📢 FRIDAY SERMON INFO FOR THIS WEEK (5 JUNE 2026 / 19 DZULHIJJAH 1447H)</div>
+                <div class="block-title" style="color: #d4af37; text-align: center; font-size: 1.1em;">🕋 FRIDAY SERMON INFO FOR THIS WEEK (5 JUNE 2026 / 19 DZULHIJJAH 1447H)</div>
                 <div class="schedule-grid">
                     <!-- Makkah Sermon -->
                     <div class="schedule-column" style="border-left: 3px solid #cc0000;">
@@ -556,7 +556,7 @@
                 <!-- Live Translation & Website Note Links -->
                 <div style="margin-top: 15px; text-align: center; background: #252525; padding: 12px; border-radius: 5px; line-height: 1.6;">
                     <div>
-                        <span style="font-size: 0.9em; color: #eee;">🌍 Live Translation in Multiple Languages: </span>
+                        <span style="font-size: 0.9em; color: #eee;">🔊 Live Translation in Multiple Languages: </span>
                         <a href="https://www.youtube.com/@Al-haramain-Sermons/featured" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: underline; margin-left: 5px;">Al-Haramain Sermons (YouTube)</a>
                     </div>
                     <div style="font-size: 0.85em; color: #aaa; margin-top: 4px;">
@@ -662,13 +662,12 @@
             const overlay = document.getElementById('epgOverlay');
             const header = document.getElementById('epgHeader');
             
+            // PENGUBAHAN: Hanya benarkan EPG dipaparkan jika saluran bermula dengan 'QuranKSA_'
             if (channelName.startsWith('QuranKSA_')) {
                 header.textContent = "Now Playing on Al-Quran Al-Kareem TV";
                 overlay.style.display = "block";
-            } else if (channelName.startsWith('SunnahKSA_')) {
-                header.textContent = "Now Playing on Al-Sunnah Al-Nabawiyah TV";
-                overlay.style.display = "block";
             } else {
+                // SunnahKSA dan Saudiya TV tidak akan memaparkan sebarang overlay EPG
                 overlay.style.display = "none";
             }
 
@@ -693,7 +692,8 @@
         ];
 
         function updateLiveEPG() {
-            if (!currentChannelName.startsWith('QuranKSA_') && !currentChannelName.startsWith('SunnahKSA_')) return;
+            // PENGUBAHAN: Sekat pemprosesan logik EPG jika ia bukan saluran QuranKSA
+            if (!currentChannelName.startsWith('QuranKSA_')) return;
 
             const now = new Date();
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
