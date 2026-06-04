@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasjeelat Al-Haramain As-Sharifain Website</title>
-    <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body {
@@ -294,7 +293,7 @@
             border-color: #fff;
         }
 
-        /* SCHEDULES WIDGET */
+        /* SCHEDULES WIDGET & DYNAMIC HIGHLIGHTS */
         .schedule-widget {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -348,17 +347,58 @@
             text-transform: uppercase;
             text-align: center;
         }
+        
+        /* WIDGET ROW TIMING HIGHLIGHTS */
         .schedule-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 0.9em;
-            padding: 6px 0;
+            padding: 6px 6px;
             border-bottom: 1px solid #222;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
         .schedule-row:last-child { border-bottom: none; }
-        .prayer-label { color: #a0a0a0; font-weight: 500; }
+        .prayer-label { color: #a0a0a0; font-weight: 500; display: flex; align-items: center; gap: 6px; }
         .name-value { color: #ffffff; font-weight: bold; text-align: right; }
         .disclaimer-text { font-size: 0.8em; color: #a0a0a0; text-align: center; margin-top: 5px; font-style: italic; }
+
+        /* Kesan aktif menyala apabila solat sedang berlangsung (< 15 Minit) */
+        .schedule-row.active-highlight {
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.15);
+        }
+        .schedule-row.active-highlight .prayer-label {
+            color: #d4af37;
+            font-weight: bold;
+        }
+        .schedule-row.active-highlight .name-value {
+            text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Mini live status tags */
+        .live-tag-mini {
+            display: none;
+            background-color: #ff4444;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 1px 4px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            animation: pulseBlink 1.5s infinite ease-in-out;
+        }
+        .schedule-row.active-highlight .live-tag-mini {
+            display: inline-block;
+        }
+
+        @keyframes pulseBlink {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
 
         /* SOCIAL MEDIA WIDGET */
         .social-widget {
@@ -427,7 +467,6 @@
     <h1>Tasjeelat Al-Haramain As-Sharifain Website</h1>
 
     <div class="container">
-        <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
             <div class="widget-card" style="flex: 1.2; min-width: 280px;">
                 <div class="widget-title">Dual Clock & Date</div>
@@ -457,14 +496,12 @@
             </div>
         </div>
 
-        <!-- STATIC INFO BOX -->
         <div class="static-info-container theme-mecca" id="dynamicInfoBox">
             <div class="static-info-text" id="dynamicInfoText">
                 Loading prayer times information...
             </div>
         </div>
 
-        <!-- VIDEO PLAYER -->
         <div class="video-holder">
             <div id="epgOverlay" class="stream-epg-overlay">
                 <div id="epgHeader" class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
@@ -484,7 +521,6 @@
             </video>
         </div>
 
-        <!-- RECORD CONTROL PANEL -->
         <div class="record-control-panel">
             <button id="recordBtn" class="record-btn" onclick="toggleRecording()">
                 <span class="dot"></span> Start Recording
@@ -494,7 +530,6 @@
             </div>
         </div>
 
-        <!-- PLAYLIST HORIZONTAL -->
         <div class="playlist-horizontal">
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
@@ -520,15 +555,12 @@
             </div>
         </div>
 
-        <!-- SCHEDULES WIDGET -->
         <div class="schedule-widget">
             <div class="disclaimer-text" style="margin-bottom: 10px;">Names here may vary than the actual name.</div>
             
-            <!-- WEEKLY FRIDAY SERMON INFO SECTION -->
             <div class="schedule-block" style="border: 2px solid #d4af37; margin-bottom: 20px; background-color: #1a1a1a;">
                 <div class="block-title" style="color: #d4af37; text-align: center; font-size: 1.1em;">🕋 FRIDAY SERMON INFO FOR THIS WEEK (5 JUNE 2026 / 19 DZULHIJJAH 1447H)</div>
                 <div class="schedule-grid">
-                    <!-- Makkah Sermon -->
                     <div class="schedule-column" style="border-left: 3px solid #cc0000;">
                         <div class="column-header" style="color: #ff4444;">🕋 MASJIDIL HARAM, MAKKAH</div>
                         <div class="schedule-row">
@@ -540,7 +572,6 @@
                             <span class="name-value">Syeikh Dr. Abdullah Al-Juhany</span>
                         </div>
                     </div>
-                    <!-- Madinah Sermon -->
                     <div class="schedule-column" style="border-left: 3px solid #00aa22;">
                         <div class="column-header" style="color: #22ff55;">🕌 MASJID NABAWI, MADINAH</div>
                         <div class="schedule-row">
@@ -553,10 +584,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Live Translation & Website Note Links -->
                 <div style="margin-top: 15px; text-align: center; background: #252525; padding: 12px; border-radius: 5px; line-height: 1.6;">
                     <div>
-                        <span style="font-size: 0.9em; color: #eee;">🔊 Live Translation in Multiple Languages: </span>
+                        <span style="font-size: 0.9em; color: #eee;">🎙️ Live Translation in Multiple Languages: </span>
                         <a href="https://www.youtube.com/@Al-haramain-Sermons/featured" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: underline; margin-left: 5px;">Al-Haramain Sermons (YouTube)</a>
                     </div>
                     <div style="font-size: 0.85em; color: #aaa; margin-top: 4px;">
@@ -571,19 +601,19 @@
                     <div class="schedule-grid">
                         <div class="schedule-column">
                             <div class="column-header">Expected Imams</div>
-                            <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Bandar Baleelah</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Abdullah Juhany</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Abdullah Juhany</span></div>
+                            <div class="schedule-row" id="mecca-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Bandar Baleelah</span></div>
+                            <div class="schedule-row" id="mecca-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Abdullah Juhany</span></div>
+                            <div class="schedule-row" id="mecca-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
+                            <div class="schedule-row" id="mecca-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Maher Al-Muaiqly</span></div>
+                            <div class="schedule-row" id="mecca-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Abdullah Juhany</span></div>
                         </div>
                         <div class="schedule-column">
                             <div class="column-header">Expected Bilals</div>
-                            <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value" id="bilal-fajr">-</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value" id="bilal-dhuhr">-</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value" id="bilal-asr">-</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value" id="bilal-maghrib">-</span></div>
-                            <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value" id="bilal-isha">-</span></div>
+                            <div class="schedule-row" id="mecca-bilal-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="bilal-fajr">-</span></div>
+                            <div class="schedule-row" id="mecca-bilal-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="bilal-dhuhr">-</span></div>
+                            <div class="schedule-row" id="mecca-bilal-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="bilal-asr">-</span></div>
+                            <div class="schedule-row" id="mecca-bilal-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="bilal-maghrib">-</span></div>
+                            <div class="schedule-row" id="mecca-bilal-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="bilal-isha">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -592,17 +622,16 @@
                     <div class="block-title">Madinah Schedule (14 - 20 Dzulhijjah 1447H)</div>
                     <div class="schedule-column" style="background-color: #1e1e1e;">
                         <div class="column-header">Expected Imams</div>
-                        <div class="schedule-row"><span class="prayer-label">Fajr</span><span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span></div>
-                        <div class="schedule-row"><span class="prayer-label">Dhuhr</span><span class="name-value">Syeikh Dr. Muhammad Al-Burhaji</span></div>
-                        <div class="schedule-row"><span class="prayer-label">Asr</span><span class="name-value">Syeikh Dr. Khalid Al-Muhanna</span></div>
-                        <div class="schedule-row"><span class="prayer-label">Maghrib</span><span class="name-value">Syeikh Saleh Al-Maghamsi</span></div>
-                        <div class="schedule-row"><span class="prayer-label">Isha</span><span class="name-value">Syeikh Dr. Abdullah Al-Qarafi</span></div>
+                        <div class="schedule-row" id="madinah-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span></div>
+                        <div class="schedule-row" id="madinah-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Muhammad Al-Burhaji</span></div>
+                        <div class="schedule-row" id="madinah-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Khalid Al-Muhanna</span></div>
+                        <div class="schedule-row" id="madinah-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Saleh Al-Maghamsi</span></div>
+                        <div class="schedule-row" id="madinah-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdullah Al-Qarafi</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SOCIAL MEDIA WIDGET -->
         <div class="social-widget">
             <div class="widget-title">Follow Our Social Media</div>
             <div class="social-grid">
@@ -614,7 +643,6 @@
         </div>
     </div>
 
-    <!-- ADHAN POPUP HTML -->
     <div id="azanPopup" class="azan-popup">
         <div class="azan-title">ADHAN TIME ALERT</div>
         <div class="azan-body">
@@ -624,7 +652,6 @@
         <div class="azan-footer">Let's prepare ourselves for prayer.</div>
     </div>
 
-    <!-- Video.js Script -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
@@ -662,12 +689,13 @@
             const overlay = document.getElementById('epgOverlay');
             const header = document.getElementById('epgHeader');
             
-            // PENGUBAHAN: Hanya benarkan EPG dipaparkan jika saluran bermula dengan 'QuranKSA_'
             if (channelName.startsWith('QuranKSA_')) {
                 header.textContent = "Now Playing on Al-Quran Al-Kareem TV";
                 overlay.style.display = "block";
+            } else if (channelName.startsWith('SunnahKSA_')) {
+                header.textContent = "Now Playing on Al-Sunnah Al-Nabawiyah TV";
+                overlay.style.display = "block";
             } else {
-                // SunnahKSA dan Saudiya TV tidak akan memaparkan sebarang overlay EPG
                 overlay.style.display = "none";
             }
 
@@ -692,8 +720,7 @@
         ];
 
         function updateLiveEPG() {
-            // PENGUBAHAN: Sekat pemprosesan logik EPG jika ia bukan saluran QuranKSA
-            if (!currentChannelName.startsWith('QuranKSA_')) return;
+            if (!currentChannelName.startsWith('QuranKSA_') && !currentChannelName.startsWith('SunnahKSA_')) return;
 
             const now = new Date();
             const makkahTimeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Riyadh', hour12: false });
@@ -844,6 +871,45 @@
             return h * 60 + m;
         };
 
+        /* LOGIK PINTAR UNTUK MENGURUSKAN HIGHLIGHT WIDGET & 15 MINIT LIMIT */
+        function handleWidgetHighlights(currentMakkahMinutes, makkahDay, makkahMonthNumeric) {
+            // Bersihkan semua class aktif lama terlebih dahulu
+            const activeRows = document.querySelectorAll('.schedule-row.active-highlight');
+            activeRows.forEach(row => row.classList.remove('active-highlight'));
+
+            if (makkahMonthNumeric !== 6 && makkahMonthNumeric !== 7) return;
+
+            const meccaToday = prayerSchedule[makkahDay];
+            const madinahToday = madinahSchedule[makkahDay];
+
+            const prayerKeys = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+
+            // Semak jadual Makkah (Imam & Bilal)
+            if (meccaToday) {
+                prayerKeys.forEach(key => {
+                    const prayerStartMinutes = timeToMinutes(meccaToday[key]);
+                    // Syarat: Waktu sekarang sudah masuk waktu solat DAN belum melebihi 15 minit
+                    if (currentMakkahMinutes >= prayerStartMinutes && currentMakkahMinutes < (prayerStartMinutes + 15)) {
+                        const imamRow = document.getElementById(`mecca-row-${key}`);
+                        const bilalRow = document.getElementById(`mecca-bilal-row-${key}`);
+                        if (imamRow) imamRow.classList.add('active-highlight');
+                        if (bilalRow) bilalRow.classList.add('active-highlight');
+                    }
+                });
+            }
+
+            // Semak jadual Madinah (Imam)
+            if (madinahToday) {
+                prayerKeys.forEach(key => {
+                    const prayerStartMinutes = timeToMinutes(madinahToday[key]);
+                    if (currentMakkahMinutes >= prayerStartMinutes && currentMakkahMinutes < (prayerStartMinutes + 15)) {
+                        const madinahRow = document.getElementById(`madinah-row-${key}`);
+                        if (madinahRow) madinahRow.classList.add('active-highlight');
+                    }
+                });
+            }
+        }
+
         function updateClocksAndPrayers() {
             const now = new Date();
 
@@ -908,6 +974,8 @@
                 }
             }
 
+            // Jalankan fungsi pengurusan highlight setiap saat berdasarkan jam Arab Saudi semasa
+            handleWidgetHighlights(currentMakkahMinutes, makkahDay, makkahMonthNumeric);
             monitorPrayerChange();
             updateLiveEPG();
         }
