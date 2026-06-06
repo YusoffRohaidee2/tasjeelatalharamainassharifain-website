@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasjeelat Al-Haramain As-Sharifain Website</title>
     <!-- Video.js CSS -->
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <link href="https://vjs.zenczen.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -590,16 +590,26 @@
                     </div>
                 </div>
 
-                <!-- MADINAH BLOCK (UPDATED IMAMS) -->
+                <!-- MADINAH BLOCK (UPDATED WITH EXPECTED BILALS WIDGET) -->
                 <div class="schedule-block">
                     <div class="block-title">Madinah Schedule (21 - 27 Dzulhijjah 1447H)</div>
-                    <div class="schedule-column" style="background-color: #1e1e1e;">
-                        <div class="column-header">Expected Imams</div>
-                        <div class="schedule-row" id="madinah-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Muhammad Al-Burhaji</span></div>
-                        <div class="schedule-row" id="madinah-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span></div>
-                        <div class="schedule-row" id="madinah-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Ali Al-Huthaify</span></div>
-                        <div class="schedule-row" id="madinah-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Ahmad Al-Huthaify</span></div>
-                        <div class="schedule-row" id="madinah-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdullah Al-Baijan</span></div>
+                    <div class="schedule-grid">
+                        <div class="schedule-column">
+                            <div class="column-header">Expected Imams</div>
+                            <div class="schedule-row" id="madinah-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Muhammad Al-Burhaji</span></div>
+                            <div class="schedule-row" id="madinah-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdul Bari Al-Thubaity</span></div>
+                            <div class="schedule-row" id="madinah-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Ali Al-Huthaify</span></div>
+                            <div class="schedule-row" id="madinah-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Ahmad Al-Huthaify</span></div>
+                            <div class="schedule-row" id="madinah-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">ON AIR</span></span><span class="name-value">Syeikh Dr. Abdullah Al-Baijan</span></div>
+                        </div>
+                        <div class="schedule-column">
+                            <div class="column-header">Expected Bilals</div>
+                            <div class="schedule-row" id="madinah-bilal-row-Fajr"><span class="prayer-label">Fajr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="madinah-bilal-fajr">-</span></div>
+                            <div class="schedule-row" id="madinah-bilal-row-Dhuhr"><span class="prayer-label">Dhuhr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="madinah-bilal-dhuhr">-</span></div>
+                            <div class="schedule-row" id="madinah-bilal-row-Asr"><span class="prayer-label">Asr <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="madinah-bilal-asr">-</span></div>
+                            <div class="schedule-row" id="madinah-bilal-row-Maghrib"><span class="prayer-label">Maghrib <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="madinah-bilal-maghrib">-</span></div>
+                            <div class="schedule-row" id="madinah-bilal-row-Isha"><span class="prayer-label">Isha <span class="live-tag-mini">LIVE</span></span><span class="name-value" id="madinah-bilal-isha">-</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -736,13 +746,24 @@
 
         /* DAILY MAKKAH BILAL DATA */
         const bilalWeeklySchedule = {
-            0: { Fajr: "Syeikh Tawfiq Khoj", Dhuhr: "Syeikh Ahmad Nahas", Asr: "Syeikh Turki Al-Hassani", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" }, // Ahad (21/12)
-            1: { Fajr: "Syeikh Muhammad Basad", Dhuhr: "Syeikh Said Flathe", Asr: "Syeikh Tawfiq Khoj", Maghrib: "Syeikh d. Majid Abbas", Isha: "Syeikh Sehil Hafiz" }, // Isnin (22/12)
-            2: { Fajr: "Syeikh Ibrahim Al-Madani", Dhuhr: "Syeikh Hussain Shahat", Asr: "Syeikh Muhammad Shaker", Maghrib: "Syeikh Abdullah Ba'afeef", Isha: "Syeikh Turki Al-Hassani" }, // Selasa (23/12)
-            3: { Fajr: "Syeikh Sehil Hafiz", Dhuhr: "Syeikh Hashem Saqqaf", Asr: "Syeikh Abdullah Ba'afeef", Maghrib: "Syeikh d. Essam Khan", Isha: "Syeikh Muhammad Basad" }, // Rabu (24/12)
-            4: { Fajr: "Syeikh Muhammad Maghribi", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Ahmad Khojah", Maghrib: "Syeikh Emad Baqri", Isha: "Syeikh Ali Mulla" }, // Khamis (25/12)
-            5: { Fajr: "Syeikh Hashem Saqqaf", Dhuhr: "Syeikh Al-Adhan (1) / (2)", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Sami Rayes", Isha: "Syeikh Naif Fiedeh" }, // Jumaat (26/12)
-            6: { Fajr: "Syeikh Sami Rayes", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Muhammad Maghribi", Isha: "Syeikh Ahmad Basnwi" } // Sabtu (27/12)
+            0: { Fajr: "Syeikh Tawfiq Khoj", Dhuhr: "Syeikh Ahmad Nahas", Asr: "Syeikh Turki Al-Hassani", Maghrib: "Syeikh Tawfiq Khoj", Isha: "Syeikh Ibrahim Al-Madani" },
+            1: { Fajr: "Syeikh Muhammad Basad", Dhuhr: "Syeikh Said Flathe", Asr: "Syeikh Tawfiq Khoj", Maghrib: "Syeikh d. Majid Abbas", Isha: "Syeikh Sehil Hafiz" },
+            2: { Fajr: "Syeikh Ibrahim Al-Madani", Dhuhr: "Syeikh Hussain Shahat", Asr: "Syeikh Muhammad Shaker", Maghrib: "Syeikh Abdullah Ba'afeef", Isha: "Syeikh Turki Al-Hassani" },
+            3: { Fajr: "Syeikh Sehil Hafiz", Dhuhr: "Syeikh Hashem Saqqaf", Asr: "Syeikh Abdullah Ba'afeef", Maghrib: "Syeikh d. Essam Khan", Isha: "Syeikh Muhammad Basad" },
+            4: { Fajr: "Syeikh Muhammad Maghribi", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Ahmad Khojah", Maghrib: "Syeikh Emad Baqri", Isha: "Syeikh Ali Mulla" },
+            5: { Fajr: "Syeikh Hashem Saqqaf", Dhuhr: "Syeikh Al-Adhan (1) / (2)", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Sami Rayes", Isha: "Syeikh Naif Fiedeh" },
+            6: { Fajr: "Syeikh Sami Rayes", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Muhammad Maghribi", Isha: "Syeikh Ahmad Basnwi" }
+        };
+
+        /* DAILY MADINAH BILAL DATA (EXTRACTED FROM image_c626bc.png) */
+        const madinahBilalWeeklySchedule = {
+            0: { Fajr: "Syeikh Ashraf Afifi", Dhuhr: "Syeikh Anas Al-Sharif", Asr: "Syeikh Osama Al-Akhdar", Maghrib: "Syeikh Omar Kamal", Isha: "Syeikh Muhammad Hakim" }, // Ahad
+            1: { Fajr: "Syeikh Anas Al-Sharif", Dhuhr: "Syeikh Abdullah Al-Hunaini", Asr: "Syeikh Adel Kateb", Maghrib: "Syeikh Muhammad Qassas", Isha: "Syeikh Ahmad Afifi" }, // Isnin
+            2: { Fajr: "Syeikh Abdullah Al-Hunaini", Dhuhr: "Syeikh Omar Kamal", Asr: "Syeikh Iyad Shukri", Maghrib: "Syeikh Mahdi Berri", Isha: "Syeikh Omar Sunbul" }, // Selasa
+            3: { Fajr: "Syeikh Omar Kamal", Dhuhr: "Syeikh Essam Bukhari", Asr: "Syeikh Abdul Majeed Al-Suraihi", Maghrib: "Syeikh Saud Bukhari", Isha: "Syeikh Sami Diouli" }, // Rabu
+            4: { Fajr: "Syeikh Essam Bukhari", Dhuhr: "Syeikh Abdul Rahman Khashogji", Asr: "Syeikh Ahmad Al-Ansari", Maghrib: "Syeikh Hassan Khashogji", Isha: "Syeikh Ashraf Afifi" }, // Khamis
+            5: { Fajr: "Syeikh Abdul Rahman Khashogji", Dhuhr: "Syeikh Muhammad Hakim", Asr: "Syeikh Omar Kamal", Maghrib: "Syeikh Osama Al-Akhdar", Isha: "Syeikh Anas Al-Sharif" }, // Jumaat
+            6: { Fajr: "Syeikh Muhammad Hakim", Dhuhr: "Syeikh Ahmad Afifi", Asr: "Syeikh Muhammad Qassas", Maghrib: "Syeikh Adel Kateb", Isha: "Syeikh Abdullah Al-Hunaini" } // Sabtu
         };
 
         /* PRAYER SCHEDULES (MAKKAH & MADINAH) */
@@ -875,7 +896,9 @@
                     const prayerStartMinutes = timeToMinutes(madinahToday[key]);
                     if (currentMakkahMinutes >= prayerStartMinutes && currentMakkahMinutes < (prayerStartMinutes + 15)) {
                         const madinahRow = document.getElementById(`madinah-row-${key}`);
+                        const madinahBilalRow = document.getElementById(`madinah-bilal-row-${key}`);
                         if (madinahRow) madinahRow.classList.add('active-highlight');
+                        if (madinahBilalRow) madinahBilalRow.classList.add('active-highlight');
                     }
                 });
             }
@@ -892,7 +915,6 @@
             const makkahDateString = now.toLocaleDateString('en-US', { timeZone: 'Asia/Riyadh', day: 'numeric', month: 'long', year: 'numeric' });
             document.getElementById('makkahDate').innerText = `Saudi Arabia Date: ${makkahDateString}`;
             
-            // DYNAMIC SAUDI ARABIA HIJRI DATE SYSTEM
             try {
                 const makkahHijriString = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
                     timeZone: 'Asia/Riyadh',
@@ -934,6 +956,7 @@
                 document.getElementById('madinahNextPrayer').innerHTML = "Next: <span class='highlight-text'>-</span>";
             }
 
+            // UPDATE MAKKAH BILAL WIDGET VALUES
             const todayBilal = bilalWeeklySchedule[saudiDayIndex];
             if (todayBilal) {
                 document.getElementById('bilal-fajr').innerText = todayBilal.Fajr;
@@ -941,6 +964,16 @@
                 document.getElementById('bilal-asr').innerText = todayBilal.Asr;
                 document.getElementById('bilal-maghrib').innerText = todayBilal.Maghrib;
                 document.getElementById('bilal-isha').innerText = todayBilal.Isha;
+            }
+
+            // UPDATE MADINAH BILAL WIDGET VALUES
+            const todayMadinahBilal = madinahBilalWeeklySchedule[saudiDayIndex];
+            if (todayMadinahBilal) {
+                document.getElementById('madinah-bilal-fajr').innerText = todayMadinahBilal.Fajr;
+                document.getElementById('madinah-bilal-dhuhr').innerText = todayMadinahBilal.Dhuhr;
+                document.getElementById('madinah-bilal-asr').innerText = todayMadinahBilal.Asr;
+                document.getElementById('madinah-bilal-maghrib').innerText = todayMadinahBilal.Maghrib;
+                document.getElementById('madinah-bilal-isha').innerText = todayMadinahBilal.Isha;
             }
 
             const infoTextElement = document.getElementById('dynamicInfoText');
