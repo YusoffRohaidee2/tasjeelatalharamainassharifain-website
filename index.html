@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasjeelat Al-Haramain As-Sharifain Website</title>
-    <!-- Video.js CSS -->
-    <link href="https://vjs.zenczen.net/8.10.0/video-js.css" rel="stylesheet" />
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -29,6 +28,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            box-sizing: border-box;
         }
         /* WIDGETS PANEL */
         .widgets-grid {
@@ -114,15 +114,23 @@
             line-height: 1.5;
         }
 
-        /* PLAYER CONTAINER & HOVER OVERLAY */
+        /* PLAYER CONTAINER & HOVER OVERLAY - FIX KECIL */
         .video-holder {
             width: 100%;
+            min-width: 100%;
             background: #000;
             border: 2px solid #d4af37;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             position: relative;
+            box-sizing: border-box;
+        }
+        
+        /* Memaksa Video.js mengekalkan saiz penuh */
+        .video-js {
+            width: 100% !important;
+            height: auto !important;
         }
         
         .video-holder:hover .stream-epg-overlay {
@@ -468,7 +476,6 @@
     <h1>Tasjeelat Al-Haramain As-Sharifain Website</h1>
 
     <div class="container">
-        <!-- WIDGETS PANEL -->
         <div class="widgets-grid">
             <div class="widget-card" style="flex: 1.2; min-width: 280px;">
                 <div class="widget-title">Dual Clock & Date</div>
@@ -499,14 +506,12 @@
             </div>
         </div>
 
-        <!-- STATIC INFO BOX -->
         <div class="static-info-container theme-mecca" id="dynamicInfoBox">
             <div class="static-info-text" id="dynamicInfoText">
                 Loading prayer times information...
             </div>
         </div>
 
-        <!-- VIDEO PLAYER -->
         <div class="video-holder">
             <div id="epgOverlay" class="stream-epg-overlay">
                 <div id="epgHeader" class="stream-epg-header">Now Playing on Al-Quran Al-Kareem TV</div>
@@ -526,7 +531,6 @@
             </video>
         </div>
 
-        <!-- RECORD CONTROL PANEL -->
         <div class="record-control-panel">
             <button id="recordBtn" class="record-btn" onclick="toggleRecording()">
                 <span class="dot"></span> Start Recording
@@ -536,7 +540,6 @@
             </div>
         </div>
 
-        <!-- PLAYLIST HORIZONTAL -->
         <div class="playlist-horizontal">
             <div class="category-group">
                 <div class="category-title">Saudiya TV</div>
@@ -562,12 +565,10 @@
             </div>
         </div>
 
-        <!-- SCHEDULES WIDGET -->
         <div class="schedule-widget">
             <div class="disclaimer-text" style="margin-bottom: 10px;">Names here may vary than the actual name.</div>
 
             <div class="schedule-main-grid">
-                <!-- MAKKAH BLOCK -->
                 <div class="schedule-block">
                     <div class="block-title">Makkah Schedule (21 - 27 Dzulhijjah 1447H)</div>
                     <div class="schedule-grid">
@@ -590,7 +591,6 @@
                     </div>
                 </div>
 
-                <!-- MADINAH BLOCK (UPDATED WITH EXPECTED BILALS WIDGET) -->
                 <div class="schedule-block">
                     <div class="block-title">Madinah Schedule (21 - 27 Dzulhijjah 1447H)</div>
                     <div class="schedule-grid">
@@ -615,7 +615,6 @@
             </div>
         </div>
 
-        <!-- SOCIAL MEDIA WIDGET -->
         <div class="social-widget">
             <div class="widget-title">Follow Our Social Media</div>
             <div class="social-grid">
@@ -627,7 +626,6 @@
         </div>
     </div>
 
-    <!-- ADHAN POPUP HTML -->
     <div id="azanPopup" class="azan-popup">
         <div class="azan-title">ADHAN TIME ALERT</div>
         <div class="azan-body">
@@ -637,7 +635,6 @@
         <div class="azan-footer">Let's prepare ourselves for prayer.</div>
     </div>
 
-    <!-- Video.js Script -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
@@ -755,7 +752,7 @@
             6: { Fajr: "Syeikh Sami Rayes", Dhuhr: "Syeikh Ibrahim Al-Madani", Asr: "Syeikh Sami Rayes", Maghrib: "Syeikh Muhammad Maghribi", Isha: "Syeikh Ahmad Basnwi" }
         };
 
-        /* DAILY MADINAH BILAL DATA (EXTRACTED FROM image_c626bc.png) */
+        /* DAILY MADINAH BILAL DATA (EXTRACTED) */
         const madinahBilalWeeklySchedule = {
             0: { Fajr: "Syeikh Ashraf Afifi", Dhuhr: "Syeikh Anas Al-Sharif", Asr: "Syeikh Osama Al-Akhdar", Maghrib: "Syeikh Omar Kamal", Isha: "Syeikh Muhammad Hakim" }, // Ahad
             1: { Fajr: "Syeikh Anas Al-Sharif", Dhuhr: "Syeikh Abdullah Al-Hunaini", Asr: "Syeikh Adel Kateb", Maghrib: "Syeikh Muhammad Qassas", Isha: "Syeikh Ahmad Afifi" }, // Isnin
